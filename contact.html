@@ -1,0 +1,3066 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบริหารจัดการ Master Sample & Dummy Test (IATF 16949)</title>
+    <style>
+        /* =========================================================================
+           1. SELF-CONTAINED DESIGN SYSTEM & TYPOGRAPHY (OFFLINE-FIRST)
+           ========================================================================= */
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-muted: #f8fafc;
+            --bg-header: #0f172a;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --border-light: #e2e8f0;
+
+            --primary: #1d4ed8;
+            --primary-hover: #1e40af;
+            --primary-soft: #eff6ff;
+
+            --emerald: #059669;
+            --emerald-hover: #047857;
+            --emerald-soft: #ecfdf5;
+            --emerald-border: #a7f3d0;
+
+            --indigo: #4338ca;
+            --indigo-hover: #3730a3;
+            --indigo-soft: #eef2ff;
+            --indigo-border: #c7d2fe;
+
+            --amber: #d97706;
+            --amber-soft: #fffbeb;
+            --amber-border: #fde68a;
+
+            --rose: #e11d48;
+            --rose-hover: #be123c;
+            --rose-soft: #fff1f2;
+            --rose-border: #fecdd3;
+
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+            --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.18);
+
+            --font-th: "Sarabun", "Tahoma", "Leelawadee UI", system-ui, -apple-system, sans-serif;
+            --font-mono: "Consolas", "Monaco", "Courier New", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-th);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+        }
+
+        /* =========================================================================
+           2. LAYOUT & HEADER
+           ========================================================================= */
+        .app-header {
+            background: var(--bg-header);
+            color: #ffffff;
+            padding: 12px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: #f59e0b;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .iatf-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            background: #1e293b;
+            color: #fbbf24;
+            border: 1px solid #334155;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .header-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .main-container {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* =========================================================================
+           3. BUTTONS & FORM CONTROLS
+           ========================================================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: var(--font-th);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-sm {
+            font-size: 0.78rem;
+            padding: 6px 10px;
+        }
+
+        .btn-dark {
+            background: #1e293b;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+        .btn-dark:hover { background: #334155; }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-emerald {
+            background: var(--emerald);
+            color: #ffffff;
+        }
+        .btn-emerald:hover { background: var(--emerald-hover); }
+
+        .btn-indigo {
+            background: var(--indigo);
+            color: #ffffff;
+        }
+        .btn-indigo:hover { background: var(--indigo-hover); }
+
+        .btn-rose {
+            background: var(--rose);
+            color: #ffffff;
+        }
+        .btn-rose:hover { background: var(--rose-hover); }
+
+        .btn-amber {
+            background: #d97706;
+            color: #ffffff;
+        }
+        .btn-amber:hover { background: #b45309; }
+
+        .btn-outline {
+            background: #ffffff;
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+        .btn-outline:hover { background: var(--bg-muted); }
+
+        .btn-ghost-danger {
+            background: transparent;
+            color: #64748b;
+            padding: 5px 8px;
+        }
+        .btn-ghost-danger:hover {
+            background: var(--rose-soft);
+            color: var(--rose);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 4px;
+        }
+
+        .req {
+            color: var(--rose);
+        }
+
+        .form-control {
+            width: 100%;
+            font-family: var(--font-th);
+            font-size: 0.88rem;
+            padding: 8px 11px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+        }
+
+        .form-control[readonly] {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* =========================================================================
+           4. KPI SUMMARY CARDS
+           ========================================================================= */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .kpi-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.55rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* =========================================================================
+           5. TABS & PANELS
+           ========================================================================= */
+        .panel-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .tab-bar {
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 16px 0 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tab-btn {
+            font-family: var(--font-th);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #475569;
+            background: transparent;
+            border: 1px solid transparent;
+            border-top-width: 3px;
+            border-radius: 8px 8px 0 0;
+            padding: 10px 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: -1px;
+            transition: all 0.15s;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .tab-btn.active-blue {
+            background: #ffffff;
+            color: var(--primary);
+            border-color: var(--border-light);
+            border-top-color: var(--primary);
+            border-bottom-color: #ffffff;
+            font-weight: 700;
+        }
+
+        .tab-btn.active-emerald {
+            background: #ffffff;
+            color: var(--emerald);
+            border-color: var(--border-light);
+            border-top-color: var(--emerald);
+            border-bottom-color: #ffffff;
+            font-weight: 700;
+        }
+
+        .tab-btn.active-indigo {
+            background: #ffffff;
+            color: var(--indigo);
+            border-color: var(--border-light);
+            border-top-color: var(--indigo);
+            border-bottom-color: #ffffff;
+            font-weight: 700;
+        }
+
+        .tab-pane {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .sub-box {
+            background: var(--bg-muted);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 16px;
+        }
+
+        .section-heading {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0f172a;
+        }
+
+        .accent-bar {
+            width: 5px;
+            height: 20px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .form-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        /* =========================================================================
+           6. TABLES & BADGES
+           ========================================================================= */
+        .toolbar-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background: #ffffff;
+        }
+
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        table.data-table th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border-light);
+            white-space: nowrap;
+        }
+
+        table.data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        table.data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.data-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        tr.row-expired {
+            background: #fff1f2 !important;
+        }
+        tr.row-warning {
+            background: #fffbeb !important;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-emerald { background: var(--emerald-soft); color: var(--emerald); border: 1px solid var(--emerald-border); }
+        .badge-amber { background: var(--amber-soft); color: #b45309; border: 1px solid var(--amber-border); }
+        .badge-rose { background: var(--rose-soft); color: var(--rose); border: 1px solid var(--rose-border); }
+        .badge-slate { background: #e2e8f0; color: #475569; }
+        .badge-indigo { background: var(--indigo-soft); color: var(--indigo); border: 1px solid var(--indigo-border); }
+
+        .defect-pill {
+            display: inline-block;
+            background: var(--rose-soft);
+            color: #be123c;
+            border: 1px solid var(--rose-border);
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        /* =========================================================================
+           7. CHECKLIST & PACKING MACHINE CARDS
+           ========================================================================= */
+        .cards-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 16px;
+        }
+
+        .cards-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .check-card {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .check-card.state-ok {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+
+        .check-card.state-ng {
+            background: #fff1f2;
+            border-color: #fda4af;
+        }
+
+        .check-card.state-expired {
+            background: #fff1f2;
+            border-color: #fecdd3;
+            opacity: 0.9;
+        }
+
+        .btn-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mc-tag {
+            background: #0f172a;
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .topic-banner {
+            background: var(--indigo-soft);
+            border: 1px solid var(--indigo-border);
+            color: #1e1b4b;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* =========================================================================
+           8. MODALS & TOAST NOTIFICATIONS
+           ========================================================================= */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.68);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            max-width: 520px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 2px solid var(--rose);
+        }
+
+        .modal-box.modal-confirm {
+            border-color: #334155;
+            max-width: 420px;
+        }
+
+        .modal-head-danger {
+            background: var(--rose);
+            color: #ffffff;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .alert-box-rose {
+            background: var(--rose-soft);
+            border: 1px solid var(--rose-border);
+            color: #881337;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        /* Print Modal Fullscreen Overlay */
+        .print-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.82);
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .print-toolbar {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .print-canvas-scroll {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        #print-area {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 960px;
+        }
+
+        /* Standard 80mm x 50mm Industrial Tag Sticker */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80mm, 1fr));
+            gap: 16px;
+            justify-items: center;
+        }
+
+        .tag-label-card {
+            width: 80mm;
+            height: 50mm;
+            border: 2px solid #0f172a;
+            border-radius: 5px;
+            background: #ffffff;
+            padding: 3mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            color: #0f172a;
+        }
+
+        .tag-top-bar {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 2px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 2px;
+        }
+
+        .tag-mid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin: 2px 0;
+        }
+
+        .tag-footer {
+            border-top: 1px solid #94a3b8;
+            padding-top: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 8.5pt;
+        }
+
+        /* Toast Container */
+        #toast-container {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            z-index: 80;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 360px;
+        }
+
+        .toast-item {
+            padding: 11px 15px;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideUp 0.2s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border-light);
+            text-align: center;
+            padding: 12px 16px;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+
+        /* =========================================================================
+           9. DEDICATED PRINT ISOLATION (@media print)
+           ========================================================================= */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #print-modal, #print-area, #print-area * {
+                visibility: visible;
+            }
+            .print-overlay {
+                position: static;
+                background: #ffffff;
+                display: block !important;
+            }
+            .print-canvas-scroll {
+                padding: 0;
+                overflow: visible;
+            }
+            #print-area {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+                width: 100%;
+            }
+            .tag-label-card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border: 2px solid #000000 !important;
+                margin-bottom: 6mm;
+            }
+            table.print-sheet-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 10pt;
+            }
+            table.print-sheet-table th,
+            table.print-sheet-table td {
+                border: 1px solid #000000 !important;
+                padding: 5px 6px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =====================================================================
+         TOP HEADER BAR
+         ===================================================================== -->
+    <header class="app-header no-print">
+        <div class="header-inner">
+            <div class="brand-box">
+                <div class="brand-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-title">
+                        <span>ระบบควบคุม Master Sample / Dummy Test &amp; Packing Check</span>
+                        <span class="iatf-badge">IATF 16949 : 10.2.4</span>
+                    </div>
+                    <div class="brand-sub">Error-Proofing Device Verification, Tag Control &amp; Pre-Use Weighing Check System</div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button type="button" onclick="loadDemoDataWithConfirm()" class="btn btn-dark btn-sm" title="โหลดข้อมูลตัวอย่างสำหรับทดสอบระบบ">
+                    <span>โหลดข้อมูลตัวอย่าง</span>
+                </button>
+                <button type="button" onclick="exportData('json')" class="btn btn-dark btn-sm" title="สำรองข้อมูลทั้งหมดเป็นไฟล์ JSON">
+                    <span>Backup JSON</span>
+                </button>
+                <button type="button" onclick="exportData('csv-dummy')" class="btn btn-dark btn-sm">
+                    <span>CSV Dummy</span>
+                </button>
+                <button type="button" onclick="exportData('csv-daily')" class="btn btn-dark btn-sm">
+                    <span>CSV Daily</span>
+                </button>
+                <button type="button" onclick="exportData('csv-packing')" class="btn btn-dark btn-sm">
+                    <span>CSV Packing</span>
+                </button>
+                <label class="btn btn-dark btn-sm" style="cursor:pointer;" title="กู้คืนข้อมูลจากไฟล์ JSON">
+                    <span>Import JSON</span>
+                    <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+         MAIN APPLICATION WORKSPACE
+         ===================================================================== -->
+    <main class="main-container no-print">
+
+        <!-- Storage Warning Banner (Shown only if LocalStorage is blocked) -->
+        <div id="storage-warning-banner" class="hidden alert-box-rose" style="font-weight:600;">
+            แจ้งเตือน: เบราว์เซอร์ปิดกั้นการบันทึกถาวร (LocalStorage) ระบบกำลังทำงานในโหมดหน่วยความจำชั่วคราว กรุณากด Backup JSON ก่อนปิดหน้าต่าง
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <section class="kpi-grid" aria-label="สรุปสถานะประจำวัน">
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">Dummy ลงทะเบียนทั้งหมด</div>
+                    <div class="kpi-sub mono">Total Registered</div>
+                    <div id="stat-total" class="kpi-value" style="color:#0f172a;">0</div>
+                </div>
+                <div class="kpi-icon" style="background:#eff6ff;color:#1d4ed8;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">พร้อมใช้งาน (ไม่หมดอายุ)</div>
+                    <div class="kpi-sub mono">Active &amp; Valid</div>
+                    <div id="stat-active" class="kpi-value" style="color:#059669;">0</div>
+                </div>
+                <div class="kpi-icon" style="background:#ecfdf5;color:#059669;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">ใกล้หมดอายุ (&le;15วัน) / หมดอายุ</div>
+                    <div class="kpi-sub mono">Expiring Soon / Expired</div>
+                    <div style="display:flex;align-items:baseline;gap:6px;">
+                        <span id="stat-warning" class="kpi-value" style="color:#d97706;">0</span>
+                        <span style="color:#cbd5e1;font-weight:700;">/</span>
+                        <span id="stat-expired" class="kpi-value" style="color:#e11d48;font-size:1.3rem;">0</span>
+                    </div>
+                </div>
+                <div class="kpi-icon" style="background:#fff1f2;color:#e11d48;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">ตรวจ Dummy วันนี้ (OK / NG)</div>
+                    <div class="kpi-sub mono">Today Dummy Check</div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span id="stat-today-ok" class="kpi-value" style="color:#059669;">0</span>
+                        <span class="badge badge-emerald">OK</span>
+                        <span id="stat-today-ng" class="kpi-value" style="color:#e11d48;margin-left:4px;">0</span>
+                        <span class="badge badge-rose">NG</span>
+                    </div>
+                </div>
+                <div class="kpi-icon" style="background:#f0fdfa;color:#0d9488;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <div>
+                    <div class="kpi-label">ตรวจ Packing วันนี้ (C2–J7)</div>
+                    <div class="kpi-sub mono">Completed / 6 Machines</div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span id="stat-pack-done" class="kpi-value" style="color:#4338ca;">0</span>
+                        <span style="color:#64748b;font-weight:700;">/ 6</span>
+                        <span id="stat-pack-ng-badge" class="badge badge-rose hidden">NG: 0</span>
+                    </div>
+                </div>
+                <div class="kpi-icon" style="background:#eef2ff;color:#4338ca;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="m16 7 4 4-4 4"/><path d="m8 7-4 4 4 4"/></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Tabbed Container -->
+        <section class="panel-wrapper">
+            <nav class="tab-bar" role="tablist">
+                <button type="button" id="tab-btn-register" onclick="switchTab('register')" class="tab-btn active-blue" role="tab">
+                    <span>1. ทะเบียน Dummy Test &amp; พิมพ์ Tag Label</span>
+                </button>
+                <button type="button" id="tab-btn-daily" onclick="switchTab('daily')" class="tab-btn" role="tab">
+                    <span>2. บันทึกตรวจ Dummy ประจำวัน</span>
+                </button>
+                <button type="button" id="tab-btn-packing" onclick="switchTab('packing')" class="tab-btn" role="tab">
+                    <span>3. ตรวจเครื่อง Packing ก่อนใช้งาน (C2–J7)</span>
+                </button>
+            </nav>
+
+            <!-- ===============================================================
+                 TAB 1: DUMMY REGISTRATION LOG SHEET & TAG LABEL PRINTING
+                 =============================================================== -->
+            <div id="tab-content-register" class="tab-pane">
+                <div class="sub-box">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+                        <h2 class="section-heading">
+                            <span class="accent-bar" style="background:var(--primary);"></span>
+                            <span>ลงทะเบียน Master Sample / Dummy Test ใหม่</span>
+                        </h2>
+                        <button type="button" onclick="resetRegForm()" class="btn btn-outline btn-sm">ล้างค่าฟอร์ม</button>
+                    </div>
+
+                    <form id="dummy-reg-form" onsubmit="handleRegisterDummy(event)" class="form-grid-4">
+                        <input type="hidden" id="edit-dummy-index" value="-1">
+
+                        <div>
+                            <label class="form-label" for="reg-id">รหัส Dummy (Dummy ID) <span class="req">*</span></label>
+                            <input type="text" id="reg-id" required placeholder="เช่น DM-ST01-001" class="form-control mono" style="text-transform:uppercase;">
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-part">ชื่อชิ้นงาน / รุ่น (Part No. / Model) <span class="req">*</span></label>
+                            <input type="text" id="reg-part" required placeholder="เช่น Shaft Gear Assy (Model X)" class="form-control">
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-defect">ประเภทข้อบกพร่องจำลอง (Defect Type) <span class="req">*</span></label>
+                            <input type="text" id="reg-defect" list="defect-suggestions" required placeholder="เลือกหรือพิมพ์ระบุ..." class="form-control">
+                            <datalist id="defect-suggestions">
+                                <option value="No Thread (ไม่มีเกลียว)">
+                                <option value="Missing Hole (รูเจาะหาย / ไม่ทะลุ)">
+                                <option value="Wrong Length (ความยาวไม่ได้ขนาด)">
+                                <option value="Wrong Part / Mixed Model (ผิดรุ่น)">
+                                <option value="Crack / Surface Dent (รอยร้าว / บุบ)">
+                                <option value="Missing O-Ring / Seal (ขาดซีลยาง)">
+                                <option value="Reverse Assembly (ประกอบกลับด้าน)">
+                            </datalist>
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-station">จุดติดตั้ง / เครื่องจักร (Station / M/C) <span class="req">*</span></label>
+                            <input type="text" id="reg-station" required placeholder="เช่น Line A - Poka-Yoke #02" class="form-control">
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-date">วันที่ลงทะเบียน (Register Date) <span class="req">*</span></label>
+                            <input type="date" id="reg-date" required onchange="autoCalculateExpiry()" class="form-control mono">
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-validity">อายุการใช้งาน (Validity Period)</label>
+                            <select id="reg-validity" onchange="autoCalculateExpiry()" class="form-control">
+                                <option value="3">3 เดือน (90 วัน)</option>
+                                <option value="6" selected>6 เดือน (180 วัน)</option>
+                                <option value="12">1 ปี (365 วัน)</option>
+                                <option value="custom">กำหนดวันหมดอายุเอง</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-expiry">วันหมดอายุ (Expiry Date) <span class="req">*</span></label>
+                            <input type="date" id="reg-expiry" required onchange="document.getElementById('reg-validity').value='custom'" class="form-control mono">
+                        </div>
+
+                        <div>
+                            <label class="form-label" for="reg-by">ผู้ลงทะเบียน (Owner / QC By) <span class="req">*</span></label>
+                            <input type="text" id="reg-by" required placeholder="ชื่อ-สกุล / รหัสพนักงาน QA" class="form-control">
+                        </div>
+
+                        <div style="grid-column: 1 / -1; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding-top:10px; border-top:1px solid var(--border-light);">
+                            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                                <span style="font-size:0.8rem;font-weight:700;color:#334155;">สถานะควบคุม (Control Status):</span>
+                                <label style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;cursor:pointer;">
+                                    <input type="radio" name="reg-status" value="Active" checked>
+                                    <span style="color:var(--emerald);font-weight:700;">Active (ใช้งานปกติ)</span>
+                                </label>
+                                <label style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;cursor:pointer;">
+                                    <input type="radio" name="reg-status" value="Inactive">
+                                    <span style="color:#64748b;">Inactive / Obsolete (ระงับใช้)</span>
+                                </label>
+                            </div>
+
+                            <button type="submit" id="btn-submit-reg" class="btn btn-primary">
+                                <span>+ บันทึกข้อมูลลงทะเบียน</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Filter & Bulk Print Toolbar -->
+                <div class="toolbar-row">
+                    <div class="filter-group">
+                        <input type="text" id="search-dummy" oninput="renderDummyTable()" placeholder="ค้นหารหัส, ชิ้นงาน, Defect, จุดติดตั้ง..." class="form-control" style="max-width:300px;">
+                        <select id="filter-status" onchange="renderDummyTable()" class="form-control" style="max-width:230px;">
+                            <option value="ALL">สถานะทั้งหมด (All Status)</option>
+                            <option value="VALID">ใช้งานได้ปกติ (Active &amp; Valid)</option>
+                            <option value="EXPIRING">ใกล้หมดอายุ (&le; 15 วัน)</option>
+                            <option value="EXPIRED">หมดอายุแล้ว (Expired)</option>
+                            <option value="INACTIVE">ระงับการใช้งาน (Inactive)</option>
+                        </select>
+                    </div>
+
+                    <button type="button" onclick="printSelectedTags()" class="btn btn-dark">
+                        <span>ปริ้น Tag Label ที่เลือก (<span id="selected-tag-count">0</span>)</span>
+                    </button>
+                </div>
+
+                <!-- Dummy Registration Table -->
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;text-align:center;">
+                                    <input type="checkbox" id="select-all-tags" onchange="toggleSelectAllTags(this)">
+                                </th>
+                                <th>รหัส Dummy (ID)</th>
+                                <th>ชิ้นงาน / รุ่น (Part / Model)</th>
+                                <th>ข้อบกพร่องจำลอง (Defect Type)</th>
+                                <th>จุดติดตั้ง (Station)</th>
+                                <th>วันที่ลงทะเบียน</th>
+                                <th>วันหมดอายุ</th>
+                                <th>สถานะ</th>
+                                <th style="text-align:center;">จัดการ / พิมพ์ Tag</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dummy-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ===============================================================
+                 TAB 2: DAILY CHECK SHEET (ERROR-PROOFING VERIFICATION)
+                 =============================================================== -->
+            <div id="tab-content-daily" class="tab-pane hidden">
+                <div class="sub-box">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+                        <div>
+                            <h2 class="section-heading">
+                                <span class="accent-bar" style="background:var(--emerald);"></span>
+                                <span>บันทึกผลการตรวจสอบ Dummy Test ก่อนเริ่มงาน (Daily Verification)</span>
+                            </h2>
+                            <p style="font-size:0.78rem;color:#64748b;margin-top:2px;">ตามข้อกำหนด IATF 16949 ข้อ 10.2.4: ต้องทวนสอบอุปกรณ์ป้องกันความผิดพลาด (Error-Proofing) ด้วยชิ้นงาน Dummy ก่อนเริ่มกะผลิต</p>
+                        </div>
+                        <button type="button" onclick="openDailySheetPrintPreview()" class="btn btn-dark">
+                            <span>พิมพ์ใบ Daily Check Sheet (A4)</span>
+                        </button>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div>
+                            <label class="form-label" for="check-date">วันที่ทำการ Test (Test Date) <span class="req">*</span></label>
+                            <input type="date" id="check-date" onchange="renderDailyChecklist()" class="form-control mono">
+                        </div>
+                        <div>
+                            <label class="form-label" for="check-shift">กะการทำงาน (Working Shift) <span class="req">*</span></label>
+                            <select id="check-shift" onchange="renderDailyChecklist()" class="form-control">
+                                <option value="Day (กะเช้า 08:00-17:00)">Day Shift (กะเช้า 08:00 - 17:00)</option>
+                                <option value="Night (กะดึก 20:00-05:00)">Night Shift (กะดึก 20:00 - 05:00)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" for="check-inspector">ผู้ทำการ Test (Inspector / Operator) <span class="req">*</span></label>
+                            <input type="text" id="check-inspector" placeholder="ระบุชื่อผู้ตรวจสอบก่อนกดบันทึก OK/NG" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+                        <h3 style="font-size:0.86rem;font-weight:700;color:#334155;">รายการ Dummy ที่ต้องทวนสอบประจำกะ (Active Dummies)</h3>
+                        <span style="font-size:0.76rem;color:#e11d48;font-weight:600;">* ระบบล็อกอัตโนมัติไม่อนุญาตให้ใช้งาน Dummy ที่หมดอายุแล้ว</span>
+                    </div>
+                    <div id="daily-checklist-container" class="cards-grid-2"></div>
+                </div>
+
+                <!-- Historical Daily Check Log Table -->
+                <div style="padding-top:16px;border-top:1px solid var(--border-light);">
+                    <div class="toolbar-row" style="margin-bottom:10px;">
+                        <h3 style="font-size:0.95rem;font-weight:700;color:#0f172a;">ประวัติการบันทึกผลตรวจสอบย้อนหลัง (Verification History Log)</h3>
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
+                            <input type="month" id="history-month-filter" onchange="renderCheckHistoryTable()" class="form-control mono" style="width:auto;padding:5px 10px;font-size:0.8rem;">
+                            <select id="history-result-filter" onchange="renderCheckHistoryTable()" class="form-control" style="width:auto;padding:5px 10px;font-size:0.8rem;">
+                                <option value="ALL">ผลทั้งหมด (OK &amp; NG)</option>
+                                <option value="OK">เฉพาะ OK (ผ่าน)</option>
+                                <option value="NG">เฉพาะ NG (ไม่ผ่าน/พบปัญหา)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>วันที่ / เวลา</th>
+                                    <th>กะ (Shift)</th>
+                                    <th>รหัส Dummy</th>
+                                    <th>จุดติดตั้ง / ชิ้นงาน</th>
+                                    <th style="text-align:center;">ผลการ Test</th>
+                                    <th>ผู้ทำการ Test</th>
+                                    <th>หมายเหตุ / Containment Action</th>
+                                    <th style="text-align:center;">ลบ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===============================================================
+                 TAB 3: PACKING MACHINE PRE-USE WEIGHING VERIFICATION (C2 - J7)
+                 =============================================================== -->
+            <div id="tab-content-packing" class="tab-pane hidden">
+                <div class="sub-box">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+                        <div>
+                            <h2 class="section-heading">
+                                <span class="accent-bar" style="background:var(--indigo);"></span>
+                                <span>ตรวจสอบเครื่อง Packing ก่อนใช้งานประจำวัน (Pre-Use Weighing Verification)</span>
+                            </h2>
+                            <p style="font-size:0.8rem;color:#334155;margin-top:4px;">
+                                หัวข้อการ Test: <span class="badge badge-indigo">จำนวนถูกต้อง (ทำการทวนสอบด้วยการชั่งน้ำหนัก)</span> &bull; ครอบคลุมเครื่อง <strong>M/C : C2, E3, G4, H5, I6, J7</strong>
+                            </p>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                            <button type="button" onclick="batchSavePackingChecks()" class="btn btn-indigo">
+                                <span>บันทึกผลทั้งหมด (Batch Save)</span>
+                            </button>
+                            <button type="button" onclick="openPackingSheetPrintPreview()" class="btn btn-dark">
+                                <span>พิมพ์ใบ Check Sheet (A4)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-3">
+                        <div>
+                            <label class="form-label" for="pack-date">วันที่ทำการ Test (Test Date) <span class="req">*</span></label>
+                            <input type="date" id="pack-date" onchange="renderPackingCards()" class="form-control mono">
+                        </div>
+                        <div>
+                            <label class="form-label" for="pack-shift">กะการทำงาน (Working Shift) <span class="req">*</span></label>
+                            <select id="pack-shift" onchange="renderPackingCards()" class="form-control">
+                                <option value="Day (กะเช้า 08:00-17:00)">Day Shift (กะเช้า 08:00 - 17:00)</option>
+                                <option value="Night (กะดึก 20:00-05:00)">Night Shift (กะดึก 20:00 - 05:00)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" for="pack-inspector">ผู้ทำการ Test (Inspector / Operator) <span class="req">*</span></label>
+                            <input type="text" id="pack-inspector" placeholder="ระบุชื่อผู้ทวนสอบเครื่อง Packing..." class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+                        <h3 style="font-size:0.86rem;font-weight:700;color:#334155;">รายการเครื่อง Packing ที่ต้องทวนสอบก่อนเริ่มงาน (6 เครื่อง: C2, E3, G4, H5, I6, J7)</h3>
+                        <span style="font-size:0.76rem;color:#64748b;">เกณฑ์ความคลาดเคลื่อนน้ำหนักมาตรฐานเริ่มต้น: <strong>&plusmn;1.0%</strong> (ปรับค่า Tolerance % รายเครื่องได้)</span>
+                    </div>
+
+                    <div id="packing-machines-grid" class="cards-grid-3"></div>
+                </div>
+
+                <!-- Packing History Table -->
+                <div style="padding-top:16px;border-top:1px solid var(--border-light);">
+                    <div class="toolbar-row" style="margin-bottom:10px;">
+                        <h3 style="font-size:0.95rem;font-weight:700;color:#0f172a;">ประวัติการทวนสอบเครื่อง Packing ย้อนหลัง (Packing Verification Log)</h3>
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
+                            <input type="date" id="pack-history-date-filter" onchange="renderPackingHistoryTable()" class="form-control mono" style="width:auto;padding:5px 10px;font-size:0.8rem;" title="กรองตามวันที่">
+                            <select id="pack-history-mc-filter" onchange="renderPackingHistoryTable()" class="form-control mono" style="width:auto;padding:5px 10px;font-size:0.8rem;">
+                                <option value="ALL">ทุกเครื่องจักร (All M/C)</option>
+                                <option value="M/C : C2">M/C : C2</option>
+                                <option value="M/C : E3">M/C : E3</option>
+                                <option value="M/C : G4">M/C : G4</option>
+                                <option value="M/C : H5">M/C : H5</option>
+                                <option value="M/C : I6">M/C : I6</option>
+                                <option value="M/C : J7">M/C : J7</option>
+                            </select>
+                            <select id="pack-history-result-filter" onchange="renderPackingHistoryTable()" class="form-control" style="width:auto;padding:5px 10px;font-size:0.8rem;">
+                                <option value="ALL">ผลทั้งหมด (OK &amp; NG)</option>
+                                <option value="OK">เฉพาะ OK (จำนวนถูกต้อง)</option>
+                                <option value="NG">เฉพาะ NG (ไม่ถูกต้อง)</option>
+                            </select>
+                            <button type="button" onclick="clearPackingHistoryFilters()" class="btn btn-outline btn-sm">ล้างตัวกรอง</button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>วันที่ / เวลา</th>
+                                    <th>กะ</th>
+                                    <th>เครื่องจักร (M/C)</th>
+                                    <th>Part No. / Lot No.</th>
+                                    <th style="text-align:right;">จำนวนตั้งค่า</th>
+                                    <th style="text-align:right;">นน.มาตรฐาน / ชั่งจริง</th>
+                                    <th style="text-align:center;">Diff Weight / %</th>
+                                    <th style="text-align:center;">ผลการ Test</th>
+                                    <th>ผู้ทำการ Test</th>
+                                    <th>หมายเหตุ / Action</th>
+                                    <th style="text-align:center;">ลบ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pack-history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =====================================================================
+         NG CONTAINMENT ACTION MODAL
+         ===================================================================== -->
+    <div id="ng-modal" class="modal-backdrop hidden no-print" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-head-danger">
+                <div>
+                    <div id="ng-modal-title" style="font-weight:700;font-size:1rem;">แจ้งเตือน: ผลการ Test ไม่ผ่าน (NG)</div>
+                    <div id="ng-modal-subtitle" class="mono" style="font-size:0.74rem;opacity:0.9;">Verification Failure — Containment Action Required</div>
+                </div>
+                <button type="button" onclick="closeNgModal()" style="background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="ng-modal-guidelines" class="alert-box-rose"></div>
+
+                <div>
+                    <div style="font-size:0.76rem;color:#64748b;">รายการ / เครื่องจักรที่ตรวจพบปัญหา:</div>
+                    <div id="ng-modal-dummy-info" style="font-weight:700;font-size:0.9rem;color:#0f172a;margin-top:2px;"></div>
+                </div>
+
+                <div>
+                    <label class="form-label" for="ng-action-note">อาการที่พบ &amp; การจัดการเบื้องต้น (Containment Action) <span class="req">*</span></label>
+                    <textarea id="ng-action-note" rows="3" class="form-control" placeholder="ระบุสาเหตุที่พบ เช่น น้ำหนักขาด/เกินเกณฑ์, เครื่องชั่งเพี้ยน -> หยุดเครื่องแจ้งซ่อมบำรุง/QA ปรับตั้งค่า และกักกันงานล็อตก่อนหน้า..."></textarea>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:6px;">
+                    <button type="button" onclick="closeNgModal()" class="btn btn-outline">ยกเลิก</button>
+                    <button type="button" onclick="confirmNgRecord()" class="btn btn-rose">ยืนยันบันทึกผล NG &amp; Containment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         CUSTOM CONFIRMATION MODAL (REPLACES BROWSER confirm())
+         ===================================================================== -->
+    <div id="confirm-modal" class="modal-backdrop hidden no-print" role="dialog" aria-modal="true">
+        <div class="modal-box modal-confirm">
+            <div style="background:#1e293b;color:#fff;padding:12px 16px;font-weight:700;font-size:0.95rem;">
+                ยืนยันการดำเนินการ (Confirm Action)
+            </div>
+            <div class="modal-body">
+                <p id="confirm-modal-message" style="font-size:0.9rem;color:#1e293b;"></p>
+                <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px;">
+                    <button type="button" onclick="closeConfirmModal()" class="btn btn-outline btn-sm">ยกเลิก</button>
+                    <button type="button" id="confirm-modal-ok-btn" class="btn btn-rose btn-sm">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         PRINT PREVIEW OVERLAY (TAG LABELS & A4 CHECK SHEETS)
+         ===================================================================== -->
+    <div id="print-modal" class="print-overlay hidden">
+        <div class="print-toolbar no-print">
+            <div>
+                <div id="print-modal-title" style="font-weight:700;font-size:1rem;">ตัวอย่างก่อนพิมพ์ (Print Preview)</div>
+                <div id="print-modal-subtitle" style="font-size:0.75rem;color:#94a3b8;">ขนาดมาตรฐานป้ายแท็กสติกเกอร์ 80mm x 50mm</div>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button type="button" onclick="window.print()" class="btn btn-emerald">
+                    <span>สั่งพิมพ์ทันที (Print)</span>
+                </button>
+                <button type="button" onclick="closePrintModal()" class="btn btn-dark">
+                    <span>ปิดหน้าต่าง</span>
+                </button>
+            </div>
+        </div>
+        <div class="print-canvas-scroll">
+            <div id="print-area"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="no-print" aria-live="polite"></div>
+
+    <!-- Footer -->
+    <footer class="app-footer no-print">
+        ระบบบริหารจัดการ Master Sample &amp; Dummy Test (Error-Proofing Verification) &amp; Packing Check | สอดคล้องตามข้อกำหนด IATF 16949:2016 ข้อ 10.2.4 &bull; ทำงานแบบ Offline-First เต็มรูปแบบ
+    </footer>
+
+    <!-- =====================================================================
+         SELF-CONTAINED VANILLA JAVASCRIPT APPLICATION LOGIC
+         ===================================================================== -->
+    <script>
+        'use strict';
+
+        // =========================================================================
+        // 1. CONSTANTS & IN-MEMORY FALLBACK STORAGE ARCHITECTURE
+        // =========================================================================
+        const STORAGE_KEY_DUMMIES = 'iatf_dummy_masters_v2';
+        const STORAGE_KEY_CHECKS  = 'iatf_dummy_daily_checks_v2';
+        const STORAGE_KEY_PACKING = 'iatf_packing_checks_v2';
+
+        const PACKING_MACHINES = [
+            { id: 'M/C : C2', code: 'C2', line: 'Packing Line C' },
+            { id: 'M/C : E3', code: 'E3', line: 'Packing Line E' },
+            { id: 'M/C : G4', code: 'G4', line: 'Packing Line G' },
+            { id: 'M/C : H5', code: 'H5', line: 'Packing Line H' },
+            { id: 'M/C : I6', code: 'I6', line: 'Packing Line I' },
+            { id: 'M/C : J7', code: 'J7', line: 'Packing Line J' }
+        ];
+
+        let memoryStorage = {};
+        let storageAvailable = true;
+
+        function safeStorageGet(key) {
+            try {
+                if (storageAvailable) {
+                    return window.localStorage.getItem(key);
+                }
+            } catch (err) {
+                storageAvailable = false;
+                document.getElementById('storage-warning-banner').classList.remove('hidden');
+            }
+            return memoryStorage[key] || null;
+        }
+
+        function safeStorageSet(key, valueStr) {
+            memoryStorage[key] = valueStr;
+            try {
+                if (storageAvailable) {
+                    window.localStorage.setItem(key, valueStr);
+                }
+            } catch (err) {
+                storageAvailable = false;
+                document.getElementById('storage-warning-banner').classList.remove('hidden');
+                showToast('หน่วยความจำเบราว์เซอร์เต็มหรือถูกปิดกั้น กรุณา Backup JSON', 'warning');
+            }
+        }
+
+        // Application State
+        let dummies = [];
+        let dailyChecks = [];
+        let packingChecks = [];
+        let selectedDummyIdsForPrint = new Set();
+        let pendingNgContext = null;
+        let pendingConfirmCallback = null;
+
+        // =========================================================================
+        // 2. SECURITY & LOCAL TIMEZONE HELPERS (UTC+7 SAFE)
+        // =========================================================================
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Returns YYYY-MM-DD in local device timezone (fixes UTC midnight date shift in Thailand)
+        function getLocalISODate(dateObj = new Date()) {
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function getLocalTimeStr(dateObj = new Date()) {
+            const hh = String(dateObj.getHours()).padStart(2, '0');
+            const mm = String(dateObj.getMinutes()).padStart(2, '0');
+            return `${hh}:${mm}`;
+        }
+
+        function formatDateTH(isoDateStr) {
+            if (!isoDateStr || typeof isoDateStr !== 'string') return '-';
+            const parts = isoDateStr.split('-');
+            if (parts.length !== 3) return escapeHTML(isoDateStr);
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function parseLocalDate(isoDateStr) {
+            const [y, m, d] = isoDateStr.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        function getDaysUntilExpiry(expiryStr) {
+            if (!expiryStr) return 0;
+            const today = parseLocalDate(getLocalISODate());
+            const exp = parseLocalDate(expiryStr);
+            const diffMs = exp.getTime() - today.getTime();
+            return Math.round(diffMs / (1000 * 60 * 60 * 24));
+        }
+
+        // =========================================================================
+        // 3. BUILT-IN DETERMINISTIC VECTOR QR / MATRIX SVG GENERATOR (0 DEPENDENCIES)
+        // =========================================================================
+        function generateVectorMatrixSVG(payloadText, sizePx = 58) {
+            // Generates a crisp, high-contrast 21x21 QR-style matrix with standard finder patterns
+            // deterministically seeded by payloadText so every Dummy ID has a unique scannable signature.
+            const dim = 21;
+            const grid = Array.from({ length: dim }, () => Array(dim).fill(0));
+
+            // Helper to draw 7x7 QR Finder Pattern
+            function placeFinder(r0, c0) {
+                for (let r = -1; r <= 7; r++) {
+                    for (let c = -1; c <= 7; c++) {
+                        const rr = r0 + r;
+                        const cc = c0 + c;
+                        if (rr < 0 || rr >= dim || cc < 0 || cc >= dim) continue;
+                        if (r === -1 || r === 7 || c === -1 || c === 7) {
+                            grid[rr][cc] = 0; // Quiet separator
+                        } else if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+                            grid[rr][cc] = 1;
+                        } else {
+                            grid[rr][cc] = 0;
+                        }
+                    }
+                }
+            }
+
+            placeFinder(0, 0);
+            placeFinder(0, dim - 7);
+            placeFinder(dim - 7, 0);
+
+            // Timing patterns
+            for (let i = 8; i < dim - 8; i++) {
+                grid[6][i] = i % 2 === 0 ? 1 : 0;
+                grid[i][6] = i % 2 === 0 ? 1 : 0;
+            }
+
+            // Deterministic hash stream from payloadText
+            let hash = 2166136261;
+            const bytes = [];
+            for (let i = 0; i < payloadText.length; i++) {
+                const code = payloadText.charCodeAt(i);
+                bytes.push(code);
+                hash ^= code;
+                hash = Math.imul(hash, 16777619);
+            }
+
+            let bitIdx = 0;
+            for (let r = 0; r < dim; r++) {
+                for (let c = 0; c < dim; c++) {
+                    const inTopLeft = r <= 7 && c <= 7;
+                    const inTopRight = r <= 7 && c >= dim - 8;
+                    const inBotLeft = r >= dim - 8 && c <= 7;
+                    const onTiming = r === 6 || c === 6;
+                    if (inTopLeft || inTopRight || inBotLeft || onTiming) continue;
+
+                    const charVal = bytes[bitIdx % Math.max(1, bytes.length)] || 0x5A;
+                    const mixed = ((hash >>> (bitIdx % 24)) ^ (charVal >> (bitIdx % 7)) ^ (r * 3 + c * 5)) & 1;
+                    grid[r][c] = mixed;
+                    bitIdx++;
+                }
+            }
+
+            let rects = '';
+            for (let r = 0; r < dim; r++) {
+                for (let c = 0; c < dim; c++) {
+                    if (grid[r][c] === 1) {
+                        rects += `<rect x="${c + 1}" y="${r + 1}" width="1" height="1" fill="#0f172a"/>`;
+                    }
+                }
+            }
+
+            return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${dim + 2} ${dim + 2}" width="${sizePx}" height="${sizePx}" shape-rendering="crispEdges" style="display:block;background:#ffffff;">${rects}</svg>`;
+        }
+
+        // =========================================================================
+        // 4. TOAST & CUSTOM CONFIRMATION MODAL
+        // =========================================================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgMap = {
+                success: '#059669',
+                error: '#e11d48',
+                warning: '#d97706',
+                info: '#1e293b'
+            };
+            toast.className = 'toast-item';
+            toast.style.backgroundColor = bgMap[type] || bgMap.info;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.25s ease';
+                setTimeout(() => toast.remove(), 260);
+            }, 3400);
+        }
+
+        function openConfirmModal(message, onConfirm) {
+            document.getElementById('confirm-modal-message').textContent = message;
+            pendingConfirmCallback = onConfirm;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            pendingConfirmCallback = null;
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        document.getElementById('confirm-modal-ok-btn').addEventListener('click', () => {
+            const cb = pendingConfirmCallback;
+            closeConfirmModal();
+            if (typeof cb === 'function') cb();
+        });
+
+        // =========================================================================
+        // 5. DATA INITIALIZATION & SANITIZATION
+        // =========================================================================
+        function buildDemoDataset() {
+            const today = new Date();
+            const offsetDate = (days) => {
+                const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + days);
+                return getLocalISODate(d);
+            };
+            const todayStr = getLocalISODate(today);
+
+            return {
+                dummies: [
+                    {
+                        id: 'DM-PY01-001',
+                        partName: 'Housing Cover Assy (Model A)',
+                        defectType: 'Missing Hole (รูเจาะเซนเซอร์หาย)',
+                        station: 'Line 1 - Auto Drill & Vision #01',
+                        regDate: offsetDate(-60),
+                        expiryDate: offsetDate(120),
+                        registeredBy: 'สมชาย ใจดี (QA Eng.)',
+                        status: 'Active'
+                    },
+                    {
+                        id: 'DM-PY02-004',
+                        partName: 'Drive Shaft Pinion (Model B)',
+                        defectType: 'No Thread (ไม่มีเกลียวปลายเพลา)',
+                        station: 'Line 2 - Thread Checker #02',
+                        regDate: offsetDate(-170),
+                        expiryDate: offsetDate(10),
+                        registeredBy: 'วิภาดา รักงาน (QC Leader)',
+                        status: 'Active'
+                    },
+                    {
+                        id: 'DM-PY03-009',
+                        partName: 'Valve Body Sub-Assy',
+                        defectType: 'Missing O-Ring (ขาดโอริงกันรั่ว)',
+                        station: 'Line 3 - Leak Tester #01',
+                        regDate: offsetDate(-200),
+                        expiryDate: offsetDate(-15),
+                        registeredBy: 'สมชาย ใจดี (QA Eng.)',
+                        status: 'Active'
+                    },
+                    {
+                        id: 'DM-PY04-002',
+                        partName: 'Bracket Sensor Mount',
+                        defectType: 'Wrong Length (ความยาวสั้นกว่าเกณฑ์ 2mm)',
+                        station: 'Line 1 - Poka-Yoke Jig #03',
+                        regDate: offsetDate(-30),
+                        expiryDate: offsetDate(150),
+                        registeredBy: 'นพดล สุขสันต์ (QA Tech)',
+                        status: 'Active'
+                    }
+                ],
+                dailyChecks: [
+                    {
+                        uid: 'CHK-DEMO-1',
+                        date: todayStr,
+                        shift: 'Day (กะเช้า 08:00-17:00)',
+                        dummyId: 'DM-PY01-001',
+                        result: 'OK',
+                        inspector: 'กิตติพงษ์ (Operator)',
+                        note: 'เครื่อง Vision ตรวจจับงาน NG และหยุดอัตโนมัติปกติ',
+                        timestamp: '08:05'
+                    }
+                ],
+                packingChecks: [
+                    {
+                        uid: 'PCK-DEMO-1',
+                        date: todayStr,
+                        shift: 'Day (กะเช้า 08:00-17:00)',
+                        machineId: 'M/C : C2',
+                        partLot: 'SH-4021 / LOT-2611A',
+                        targetQty: 500,
+                        targetWeight: 2500.0,
+                        actualWeight: 2502.5,
+                        unit: 'g',
+                        tolPct: 1.0,
+                        diffWeight: 2.5,
+                        diffPct: 0.10,
+                        result: 'OK',
+                        inspector: 'สุรศักดิ์ (Packing Op.)',
+                        note: 'จำนวนถูกต้อง (ทวนสอบด้วยการชั่งน้ำหนัก) ตรงตามมาตรฐาน',
+                        timestamp: '08:10'
+                    },
+                    {
+                        uid: 'PCK-DEMO-2',
+                        date: todayStr,
+                        shift: 'Day (กะเช้า 08:00-17:00)',
+                        machineId: 'M/C : E3',
+                        partLot: 'BR-1108 / LOT-2611B',
+                        targetQty: 1000,
+                        targetWeight: 4200.0,
+                        actualWeight: 4198.0,
+                        unit: 'g',
+                        tolPct: 1.0,
+                        diffWeight: -2.0,
+                        diffPct: -0.05,
+                        result: 'OK',
+                        inspector: 'สุรศักดิ์ (Packing Op.)',
+                        note: 'จำนวนถูกต้อง (ทวนสอบด้วยการชั่งน้ำหนัก) ตรงตามมาตรฐาน',
+                        timestamp: '08:14'
+                    }
+                ]
+            };
+        }
+
+        function initAppData() {
+            const rawDummies = safeStorageGet(STORAGE_KEY_DUMMIES);
+            const rawChecks = safeStorageGet(STORAGE_KEY_CHECKS);
+            const rawPacking = safeStorageGet(STORAGE_KEY_PACKING);
+
+            if (!rawDummies && !rawChecks && !rawPacking) {
+                const demo = buildDemoDataset();
+                dummies = demo.dummies;
+                dailyChecks = demo.dailyChecks;
+                packingChecks = demo.packingChecks;
+                persistAll();
+                return;
+            }
+
+            try {
+                dummies = rawDummies ? JSON.parse(rawDummies) : [];
+                if (!Array.isArray(dummies)) dummies = [];
+            } catch (e) { dummies = []; }
+
+            try {
+                dailyChecks = rawChecks ? JSON.parse(rawChecks) : [];
+                if (!Array.isArray(dailyChecks)) dailyChecks = [];
+            } catch (e) { dailyChecks = []; }
+
+            try {
+                packingChecks = rawPacking ? JSON.parse(rawPacking) : [];
+                if (!Array.isArray(packingChecks)) packingChecks = [];
+            } catch (e) { packingChecks = []; }
+        }
+
+        function persistDummies() {
+            safeStorageSet(STORAGE_KEY_DUMMIES, JSON.stringify(dummies));
+            updateDashboardStats();
+        }
+
+        function persistChecks() {
+            safeStorageSet(STORAGE_KEY_CHECKS, JSON.stringify(dailyChecks));
+            updateDashboardStats();
+        }
+
+        function persistPacking() {
+            safeStorageSet(STORAGE_KEY_PACKING, JSON.stringify(packingChecks));
+            updateDashboardStats();
+        }
+
+        function persistAll() {
+            persistDummies();
+            persistChecks();
+            persistPacking();
+        }
+
+        function loadDemoDataWithConfirm() {
+            openConfirmModal('ต้องการโหลดข้อมูลตัวอย่าง (แทนที่ข้อมูลปัจจุบัน) เพื่อทดสอบระบบใช่หรือไม่?', () => {
+                const demo = buildDemoDataset();
+                dummies = demo.dummies;
+                dailyChecks = demo.dailyChecks;
+                packingChecks = demo.packingChecks;
+                selectedDummyIdsForPrint.clear();
+                persistAll();
+                renderDummyTable();
+                renderDailyChecklist();
+                renderCheckHistoryTable();
+                renderPackingCards();
+                renderPackingHistoryTable();
+                showToast('โหลดข้อมูลตัวอย่างเรียบร้อยแล้ว', 'success');
+            });
+        }
+
+        // =========================================================================
+        // 6. TAB NAVIGATION & DASHBOARD STATS
+        // =========================================================================
+        function switchTab(tabName) {
+            const map = {
+                register: { pane: 'tab-content-register', btn: 'tab-btn-register', activeClass: 'tab-btn active-blue' },
+                daily:    { pane: 'tab-content-daily',    btn: 'tab-btn-daily',    activeClass: 'tab-btn active-emerald' },
+                packing:  { pane: 'tab-content-packing',  btn: 'tab-btn-packing',  activeClass: 'tab-btn active-indigo' }
+            };
+
+            Object.keys(map).forEach(key => {
+                const paneEl = document.getElementById(map[key].pane);
+                const btnEl = document.getElementById(map[key].btn);
+                if (key === tabName) {
+                    paneEl.classList.remove('hidden');
+                    btnEl.className = map[key].activeClass;
+                } else {
+                    paneEl.classList.add('hidden');
+                    btnEl.className = 'tab-btn';
+                }
+            });
+
+            if (tabName === 'register') {
+                renderDummyTable();
+            } else if (tabName === 'daily') {
+                renderDailyChecklist();
+                renderCheckHistoryTable();
+            } else if (tabName === 'packing') {
+                renderPackingCards();
+                renderPackingHistoryTable();
+            }
+        }
+
+        function updateDashboardStats() {
+            const total = dummies.length;
+            let activeValid = 0;
+            let expiringSoon = 0;
+            let expired = 0;
+
+            dummies.forEach(d => {
+                if (d.status !== 'Active') return;
+                const daysLeft = getDaysUntilExpiry(d.expiryDate);
+                if (daysLeft < 0) {
+                    expired++;
+                } else if (daysLeft <= 15) {
+                    expiringSoon++;
+                    activeValid++;
+                } else {
+                    activeValid++;
+                }
+            });
+
+            const todayStr = getLocalISODate();
+            const todayChecks = dailyChecks.filter(c => c.date === todayStr);
+            const okCount = todayChecks.filter(c => c.result === 'OK').length;
+            const ngCount = todayChecks.filter(c => c.result === 'NG').length;
+
+            const todayPack = packingChecks.filter(p => p.date === todayStr);
+            const uniqueMachinesChecked = new Set(todayPack.map(p => p.machineId)).size;
+            const packNgCount = todayPack.filter(p => p.result === 'NG').length;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-active').textContent = activeValid;
+            document.getElementById('stat-warning').textContent = expiringSoon;
+            document.getElementById('stat-expired').textContent = expired;
+            document.getElementById('stat-today-ok').textContent = okCount;
+            document.getElementById('stat-today-ng').textContent = ngCount;
+            document.getElementById('stat-pack-done').textContent = uniqueMachinesChecked;
+
+            const packNgBadge = document.getElementById('stat-pack-ng-badge');
+            if (packNgCount > 0) {
+                packNgBadge.textContent = `NG: ${packNgCount}`;
+                packNgBadge.classList.remove('hidden');
+            } else {
+                packNgBadge.classList.add('hidden');
+            }
+        }
+
+        // =========================================================================
+        // 7. TAB 1: DUMMY REGISTRATION & VECTOR TAG LABEL PRINTING
+        // =========================================================================
+        function autoCalculateExpiry() {
+            const regDateVal = document.getElementById('reg-date').value;
+            const validityVal = document.getElementById('reg-validity').value;
+            const expiryInput = document.getElementById('reg-expiry');
+
+            if (!regDateVal || validityVal === 'custom') return;
+
+            const months = parseInt(validityVal, 10);
+            if (isNaN(months)) return;
+
+            const dt = parseLocalDate(regDateVal);
+            dt.setMonth(dt.getMonth() + months);
+            expiryInput.value = getLocalISODate(dt);
+        }
+
+        function handleRegisterDummy(e) {
+            e.preventDefault();
+            const editIdx = parseInt(document.getElementById('edit-dummy-index').value, 10);
+            const id = document.getElementById('reg-id').value.trim().toUpperCase();
+            const partName = document.getElementById('reg-part').value.trim();
+            const defectType = document.getElementById('reg-defect').value.trim();
+            const station = document.getElementById('reg-station').value.trim();
+            const regDate = document.getElementById('reg-date').value;
+            const expiryDate = document.getElementById('reg-expiry').value;
+            const registeredBy = document.getElementById('reg-by').value.trim();
+            const status = document.querySelector('input[name="reg-status"]:checked').value;
+
+            if (!id || !partName || !defectType || !station || !regDate || !expiryDate || !registeredBy) {
+                showToast('กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน', 'warning');
+                return;
+            }
+
+            if (expiryDate < regDate) {
+                showToast('วันหมดอายุต้องไม่น้อยกว่าวันที่ลงทะเบียน', 'error');
+                return;
+            }
+
+            const existingIdx = dummies.findIndex(d => d.id === id);
+            if (editIdx === -1 && existingIdx !== -1) {
+                showToast(`รหัส Dummy "${id}" มีอยู่ในระบบแล้ว กรุณาใช้รหัสอื่น`, 'error');
+                return;
+            }
+
+            const dummyObj = { id, partName, defectType, station, regDate, expiryDate, registeredBy, status };
+
+            if (editIdx >= 0 && editIdx < dummies.length) {
+                dummies[editIdx] = dummyObj;
+                showToast(`อัปเดตข้อมูล ${id} เรียบร้อยแล้ว`, 'success');
+            } else {
+                dummies.unshift(dummyObj);
+                showToast(`ลงทะเบียน Dummy ${id} สำเร็จ`, 'success');
+            }
+
+            persistDummies();
+            resetRegForm();
+            renderDummyTable();
+        }
+
+        function editDummy(index) {
+            const d = dummies[index];
+            if (!d) return;
+
+            document.getElementById('edit-dummy-index').value = index;
+            const idInput = document.getElementById('reg-id');
+            idInput.value = d.id;
+            idInput.readOnly = true;
+
+            document.getElementById('reg-part').value = d.partName;
+            document.getElementById('reg-defect').value = d.defectType;
+            document.getElementById('reg-station').value = d.station;
+            document.getElementById('reg-date').value = d.regDate;
+            document.getElementById('reg-validity').value = 'custom';
+            document.getElementById('reg-expiry').value = d.expiryDate;
+            document.getElementById('reg-by').value = d.registeredBy;
+
+            document.getElementsByName('reg-status').forEach(r => {
+                r.checked = (r.value === d.status);
+            });
+
+            const submitBtn = document.getElementById('btn-submit-reg');
+            submitBtn.innerHTML = '<span>บันทึกการแก้ไข</span>';
+            submitBtn.className = 'btn btn-amber';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetRegForm() {
+            document.getElementById('dummy-reg-form').reset();
+            document.getElementById('edit-dummy-index').value = '-1';
+            const idInput = document.getElementById('reg-id');
+            idInput.readOnly = false;
+
+            document.getElementById('reg-date').value = getLocalISODate();
+            document.getElementById('reg-validity').value = '6';
+            autoCalculateExpiry();
+
+            const submitBtn = document.getElementById('btn-submit-reg');
+            submitBtn.innerHTML = '<span>+ บันทึกข้อมูลลงทะเบียน</span>';
+            submitBtn.className = 'btn btn-primary';
+        }
+
+        function deleteDummy(index) {
+            const target = dummies[index];
+            if (!target) return;
+            openConfirmModal(`ต้องการลบรายการ Dummy "${target.id}" ออกจากทะเบียนใช่หรือไม่?`, () => {
+                dummies.splice(index, 1);
+                selectedDummyIdsForPrint.delete(target.id);
+                persistDummies();
+                renderDummyTable();
+                showToast(`ลบรายการ ${target.id} เรียบร้อยแล้ว`, 'info');
+            });
+        }
+
+        function renderDummyTable() {
+            const tbody = document.getElementById('dummy-table-body');
+            const searchQuery = document.getElementById('search-dummy').value.toLowerCase().trim();
+            const statusFilter = document.getElementById('filter-status').value;
+
+            tbody.innerHTML = '';
+            let visibleCount = 0;
+
+            dummies.forEach((d, idx) => {
+                const daysLeft = getDaysUntilExpiry(d.expiryDate);
+                const isExpired = d.status === 'Active' && daysLeft < 0;
+                const isExpiringSoon = d.status === 'Active' && daysLeft >= 0 && daysLeft <= 15;
+
+                const matchesSearch =
+                    d.id.toLowerCase().includes(searchQuery) ||
+                    d.partName.toLowerCase().includes(searchQuery) ||
+                    d.defectType.toLowerCase().includes(searchQuery) ||
+                    d.station.toLowerCase().includes(searchQuery);
+
+                if (!matchesSearch) return;
+                if (statusFilter === 'VALID' && (d.status !== 'Active' || isExpired)) return;
+                if (statusFilter === 'EXPIRING' && !isExpiringSoon) return;
+                if (statusFilter === 'EXPIRED' && !isExpired) return;
+                if (statusFilter === 'INACTIVE' && d.status !== 'Inactive') return;
+
+                visibleCount++;
+
+                let rowClass = '';
+                if (isExpired) rowClass = 'row-expired';
+                else if (isExpiringSoon) rowClass = 'row-warning';
+
+                let statusBadge = '';
+                if (d.status !== 'Active') {
+                    statusBadge = '<span class="badge badge-slate">Inactive</span>';
+                } else if (isExpired) {
+                    statusBadge = `<span class="badge badge-rose">หมดอายุ (${Math.abs(daysLeft)} วัน)</span>`;
+                } else if (isExpiringSoon) {
+                    statusBadge = `<span class="badge badge-amber">ใกล้หมดอายุ (${daysLeft} วัน)</span>`;
+                } else {
+                    statusBadge = '<span class="badge badge-emerald">Active</span>';
+                }
+
+                const isChecked = selectedDummyIdsForPrint.has(d.id) ? 'checked' : '';
+                const safeId = escapeHTML(d.id);
+
+                const tr = document.createElement('tr');
+                if (rowClass) tr.className = rowClass;
+                tr.innerHTML = `
+                    <td style="text-align:center;">
+                        <input type="checkbox" ${isChecked} data-dummy-id="${safeId}" onchange="toggleSingleTagSelect(this)" class="tag-checkbox">
+                    </td>
+                    <td class="mono" style="font-weight:700;white-space:nowrap;">${safeId}</td>
+                    <td>
+                        <div style="font-weight:700;color:#0f172a;">${escapeHTML(d.partName)}</div>
+                        <div style="font-size:0.75rem;color:#64748b;">โดย: ${escapeHTML(d.registeredBy)}</div>
+                    </td>
+                    <td><span class="defect-pill">${escapeHTML(d.defectType)}</span></td>
+                    <td style="font-size:0.82rem;color:#334155;">${escapeHTML(d.station)}</td>
+                    <td class="mono" style="font-size:0.8rem;color:#475569;white-space:nowrap;">${formatDateTH(d.regDate)}</td>
+                    <td class="mono" style="font-size:0.8rem;font-weight:700;white-space:nowrap;color:${isExpired ? '#e11d48' : (isExpiringSoon ? '#d97706' : '#334155')};">
+                        ${formatDateTH(d.expiryDate)}
+                    </td>
+                    <td>${statusBadge}</td>
+                    <td style="text-align:center;white-space:nowrap;">
+                        <div style="display:inline-flex;align-items:center;gap:6px;">
+                            <button type="button" onclick="openTagPrintPreview(['${safeId}'])" class="btn btn-dark btn-sm">ปริ้น Tag</button>
+                            <button type="button" onclick="editDummy(${idx})" class="btn btn-outline btn-sm">แก้ไข</button>
+                            <button type="button" onclick="deleteDummy(${idx})" class="btn btn-ghost-danger btn-sm" title="ลบรายการ">ลบ</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (visibleCount === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="padding:32px;text-align:center;color:#94a3b8;">
+                            ไม่พบข้อมูลรายการ Dummy Test ที่ตรงกับเงื่อนไขการค้นหา
+                        </td>
+                    </tr>
+                `;
+            }
+
+            updateSelectedTagCount();
+        }
+
+        function toggleSingleTagSelect(checkbox) {
+            const id = checkbox.getAttribute('data-dummy-id');
+            if (!id) return;
+            if (checkbox.checked) selectedDummyIdsForPrint.add(id);
+            else selectedDummyIdsForPrint.delete(id);
+            updateSelectedTagCount();
+        }
+
+        function toggleSelectAllTags(masterCheckbox) {
+            document.querySelectorAll('.tag-checkbox').forEach(cb => {
+                cb.checked = masterCheckbox.checked;
+                const id = cb.getAttribute('data-dummy-id');
+                if (id) {
+                    if (masterCheckbox.checked) selectedDummyIdsForPrint.add(id);
+                    else selectedDummyIdsForPrint.delete(id);
+                }
+            });
+            updateSelectedTagCount();
+        }
+
+        function updateSelectedTagCount() {
+            document.getElementById('selected-tag-count').textContent = selectedDummyIdsForPrint.size;
+        }
+
+        function printSelectedTags() {
+            if (selectedDummyIdsForPrint.size === 0) {
+                showToast('กรุณาติ๊กเลือกรายการ Dummy ที่ต้องการพิมพ์ Tag อย่างน้อย 1 รายการ', 'warning');
+                return;
+            }
+            openTagPrintPreview(Array.from(selectedDummyIdsForPrint));
+        }
+
+        function openTagPrintPreview(dummyIds) {
+            const targetDummies = dummies.filter(d => dummyIds.includes(d.id));
+            if (targetDummies.length === 0) return;
+
+            document.getElementById('print-modal-title').textContent = `พิมพ์ป้าย Tag Label (${targetDummies.length} ดวง)`;
+            document.getElementById('print-modal-subtitle').textContent = 'ขนาดมาตรฐานป้ายแท็กสติกเกอร์ 80mm x 50mm (Master Sample / Dummy Tag)';
+
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = `
+                <div class="tag-grid">
+                    ${targetDummies.map(d => {
+                        const qrPayload = `DUMMY:${d.id}|EXP:${d.expiryDate}|ST:${d.station}`;
+                        const qrSvg = generateVectorMatrixSVG(qrPayload, 58);
+                        return `
+                            <div class="tag-label-card">
+                                <div class="tag-top-bar">
+                                    <span class="mono" style="font-weight:700;font-size:8pt;color:#fbbf24;">MASTER SAMPLE / DUMMY</span>
+                                    <span class="mono" style="font-weight:700;font-size:7pt;background:#e11d48;color:#fff;padding:1px 5px;border-radius:2px;">DO NOT MIX</span>
+                                </div>
+
+                                <div class="tag-mid">
+                                    <div style="flex-grow:1;overflow:hidden;">
+                                        <div style="font-size:7pt;color:#64748b;line-height:1;">DUMMY ID:</div>
+                                        <div class="mono" style="font-weight:700;font-size:12pt;color:#0f172a;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(d.id)}</div>
+                                        <div style="font-size:8pt;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHTML(d.partName)}</div>
+                                        <div style="font-size:7.5pt;background:#fff1f2;color:#be123c;font-weight:700;padding:1px 4px;border:1px solid #fecdd3;border-radius:2px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                            NG: ${escapeHTML(d.defectType)}
+                                        </div>
+                                        <div style="font-size:7pt;color:#475569;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                            จุดติดตั้ง: ${escapeHTML(d.station)}
+                                        </div>
+                                    </div>
+                                    <div style="flex-shrink:0;border:1px solid #cbd5e1;padding:2px;background:#fff;">
+                                        ${qrSvg}
+                                    </div>
+                                </div>
+
+                                <div class="tag-footer">
+                                    <div><span style="color:#64748b;">REG:</span><strong>${formatDateTH(d.regDate)}</strong></div>
+                                    <div><span style="color:#64748b;">EXP:</span><strong style="color:#be123c;text-decoration:underline;">${formatDateTH(d.expiryDate)}</strong></div>
+                                    <div style="color:#475569;">QA:_______</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            document.getElementById('print-modal').classList.remove('hidden');
+        }
+
+        function closePrintModal() {
+            document.getElementById('print-modal').classList.add('hidden');
+        }
+
+        // =========================================================================
+        // 8. TAB 2: DAILY CHECK SHEET (ERROR-PROOFING VERIFICATION)
+        // =========================================================================
+        function renderDailyChecklist() {
+            const container = document.getElementById('daily-checklist-container');
+            const selectedDate = document.getElementById('check-date').value;
+            const selectedShift = document.getElementById('check-shift').value;
+
+            const activeDummies = dummies.filter(d => d.status === 'Active');
+            container.innerHTML = '';
+
+            if (activeDummies.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column:1/-1;padding:28px;text-align:center;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px;color:#64748b;">
+                        ยังไม่มีรายการ Dummy ที่สถานะ Active กรุณาลงทะเบียนในแท็บที่ 1 ก่อนครับ
+                    </div>
+                `;
+                return;
+            }
+
+            activeDummies.forEach(d => {
+                const daysLeft = getDaysUntilExpiry(d.expiryDate);
+                const isExpired = daysLeft < 0;
+                const isExpiringSoon = !isExpired && daysLeft <= 15;
+
+                const existingRecord = dailyChecks.find(
+                    c => c.date === selectedDate && c.shift === selectedShift && c.dummyId === d.id
+                );
+
+                const safeId = escapeHTML(d.id);
+                const card = document.createElement('div');
+                let cardStateClass = 'check-card';
+                if (existingRecord) {
+                    cardStateClass += existingRecord.result === 'OK' ? ' state-ok' : ' state-ng';
+                } else if (isExpired) {
+                    cardStateClass += ' state-expired';
+                }
+                card.className = cardStateClass;
+
+                let actionSectionHtml = '';
+                if (existingRecord) {
+                    const isOk = existingRecord.result === 'OK';
+                    actionSectionHtml = `
+                        <div style="background:${isOk ? '#dcfce7' : '#ffe4e6'};border:1px solid ${isOk ? '#86efac' : '#fda4af'};border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                            <div style="font-size:0.8rem;color:${isOk ? '#14532d' : '#881337'};">
+                                <div style="font-weight:700;">${isOk ? 'บันทึกผลแล้ว: OK (ผ่าน)' : 'บันทึกผลแล้ว: NG (ไม่ผ่าน — กักกันงานแล้ว)'}</div>
+                                <div style="font-size:0.75rem;margin-top:2px;">ผู้ตรวจ: ${escapeHTML(existingRecord.inspector)} (${escapeHTML(existingRecord.timestamp)})</div>
+                                ${!isOk ? `<div style="font-size:0.75rem;margin-top:2px;"><strong>Action:</strong> ${escapeHTML(existingRecord.note)}</div>` : ''}
+                            </div>
+                            <button type="button" onclick="deleteCheckRecord('${escapeHTML(existingRecord.uid)}')" class="btn btn-outline btn-sm">ยกเลิกผล</button>
+                        </div>
+                    `;
+                } else if (isExpired) {
+                    actionSectionHtml = `
+                        <div style="background:#ffe4e6;color:#9f1239;font-size:0.8rem;font-weight:700;padding:10px 12px;border-radius:8px;">
+                            ห้ามใช้งาน: Dummy หมดอายุแล้ว (${Math.abs(daysLeft)} วัน) กรุณาต่ออายุหรือเปลี่ยนชิ้นใหม่
+                        </div>
+                    `;
+                } else {
+                    actionSectionHtml = `
+                        <div class="btn-pair">
+                            <button type="button" onclick="recordDailyOk('${safeId}')" class="btn btn-emerald" style="padding:10px;">
+                                <span>Test ผ่าน (OK)</span>
+                            </button>
+                            <button type="button" onclick="openNgModal('${safeId}')" class="btn btn-rose" style="padding:10px;">
+                                <span>ไม่ผ่าน (NG)</span>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                            <div>
+                                <span class="mono" style="font-weight:700;font-size:0.98rem;color:#0f172a;">${safeId}</span>
+                                <span class="badge badge-slate" style="margin-left:6px;">${escapeHTML(d.station)}</span>
+                            </div>
+                            <span class="mono" style="font-size:0.76rem;font-weight:700;color:${isExpired ? '#e11d48' : (isExpiringSoon ? '#d97706' : '#64748b')};">
+                                EXP: ${formatDateTH(d.expiryDate)} ${isExpiringSoon ? `(เหลือ ${daysLeft} วัน)` : ''}
+                            </span>
+                        </div>
+                        <div style="font-size:0.88rem;font-weight:700;color:#334155;margin-top:4px;">${escapeHTML(d.partName)}</div>
+                        <div style="margin-top:6px;">
+                            <span class="defect-pill">จำลองข้อบกพร่อง: ${escapeHTML(d.defectType)}</span>
+                        </div>
+                    </div>
+                    ${actionSectionHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function recordDailyOk(dummyId) {
+            const date = document.getElementById('check-date').value;
+            const shift = document.getElementById('check-shift').value;
+            const inspector = document.getElementById('check-inspector').value.trim();
+
+            if (!date) {
+                showToast('กรุณาเลือกวันที่ทำการ Test', 'warning');
+                return;
+            }
+            if (!inspector) {
+                showToast('กรุณาระบุชื่อ "ผู้ทำการ Test (Inspector / Operator)" ก่อนกดบันทึก', 'warning');
+                document.getElementById('check-inspector').focus();
+                return;
+            }
+
+            // Prevent duplicate entry for same date + shift + dummyId
+            const duplicate = dailyChecks.some(c => c.date === date && c.shift === shift && c.dummyId === dummyId);
+            if (duplicate) {
+                showToast(`รายการ ${dummyId} ถูกบันทึกผลในกะนี้แล้ว`, 'info');
+                renderDailyChecklist();
+                return;
+            }
+
+            dailyChecks.unshift({
+                uid: 'CHK-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+                date,
+                shift,
+                dummyId,
+                result: 'OK',
+                inspector,
+                note: 'อุปกรณ์ Error-Proofing ตรวจจับงาน Dummy ได้ปกติ',
+                timestamp: getLocalTimeStr()
+            });
+
+            persistChecks();
+            renderDailyChecklist();
+            renderCheckHistoryTable();
+            showToast(`บันทึกผล Test ${dummyId} : OK เรียบร้อย`, 'success');
+        }
+
+        function openNgModal(dummyId) {
+            const inspector = document.getElementById('check-inspector').value.trim();
+            if (!inspector) {
+                showToast('กรุณาระบุชื่อ "ผู้ทำการ Test (Inspector / Operator)" ก่อนบันทึกผล NG', 'warning');
+                document.getElementById('check-inspector').focus();
+                return;
+            }
+
+            const dummy = dummies.find(d => d.id === dummyId);
+            if (!dummy) return;
+
+            pendingNgContext = { type: 'dummy', id: dummyId };
+            document.getElementById('ng-modal-title').textContent = 'แจ้งเตือน: ผลการ Test Dummy ไม่ผ่าน (NG)';
+            document.getElementById('ng-modal-subtitle').textContent = 'Error-Proofing Failure — Containment Action Required';
+            document.getElementById('ng-modal-guidelines').innerHTML = `
+                <strong>มาตรการบังคับตามข้อกำหนด IATF 16949 (10.2.4):</strong><br>
+                1. หยุดสายการผลิตหรือเครื่องจักรที่จุดติดตั้งนี้ทันที (Stop Line / Machine)<br>
+                2. กักกันชิ้นงานที่ผลิตหลังการตรวจสอบครั้งล่าสุด (100% Containment &amp; Re-inspection)<br>
+                3. แจ้งหัวหน้างาน (Supervisor / QA / Maintenance) เพื่อแก้ไขระบบ Poka-Yoke
+            `;
+            document.getElementById('ng-modal-dummy-info').textContent = `${dummy.id} — ${dummy.partName} (${dummy.station})`;
+            document.getElementById('ng-action-note').value = '';
+            document.getElementById('ng-modal').classList.remove('hidden');
+        }
+
+        function closeNgModal() {
+            pendingNgContext = null;
+            document.getElementById('ng-modal').classList.add('hidden');
+        }
+
+        function confirmNgRecord() {
+            if (!pendingNgContext) return;
+            const note = document.getElementById('ng-action-note').value.trim();
+            if (!note) {
+                showToast('กรุณาระบุอาการที่พบและการกักกันงาน (Containment Action)', 'error');
+                document.getElementById('ng-action-note').focus();
+                return;
+            }
+
+            const timeStr = getLocalTimeStr();
+
+            if (pendingNgContext.type === 'dummy') {
+                const date = document.getElementById('check-date').value;
+                const shift = document.getElementById('check-shift').value;
+                const inspector = document.getElementById('check-inspector').value.trim();
+                const targetId = pendingNgContext.id;
+
+                dailyChecks.unshift({
+                    uid: 'CHK-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+                    date,
+                    shift,
+                    dummyId: targetId,
+                    result: 'NG',
+                    inspector,
+                    note,
+                    timestamp: timeStr
+                });
+
+                persistChecks();
+                closeNgModal();
+                renderDailyChecklist();
+                renderCheckHistoryTable();
+                showToast(`บันทึกผล NG สำหรับ ${targetId} และแจ้งเตือน Containment แล้ว`, 'error');
+            } else if (pendingNgContext.type === 'packing') {
+                const payload = pendingNgContext.payload;
+                packingChecks.unshift({
+                    uid: 'PCK-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+                    ...payload,
+                    result: 'NG',
+                    note,
+                    timestamp: timeStr
+                });
+
+                persistPacking();
+                closeNgModal();
+                renderPackingCards();
+                renderPackingHistoryTable();
+                showToast(`บันทึกผล NG สำหรับ ${payload.machineId} และแจ้งเตือน Containment แล้ว`, 'error');
+            }
+        }
+
+        function deleteCheckRecord(uid) {
+            openConfirmModal('ต้องการลบรายการบันทึกผลการตรวจสอบนี้ใช่หรือไม่?', () => {
+                dailyChecks = dailyChecks.filter(c => c.uid !== uid);
+                persistChecks();
+                renderDailyChecklist();
+                renderCheckHistoryTable();
+                showToast('ลบรายการบันทึกผลแล้ว', 'info');
+            });
+        }
+
+        function renderCheckHistoryTable() {
+            const tbody = document.getElementById('history-table-body');
+            const monthFilter = document.getElementById('history-month-filter').value;
+            const resultFilter = document.getElementById('history-result-filter').value;
+
+            tbody.innerHTML = '';
+            let count = 0;
+
+            dailyChecks.forEach(c => {
+                if (monthFilter && !c.date.startsWith(monthFilter)) return;
+                if (resultFilter !== 'ALL' && c.result !== resultFilter) return;
+
+                count++;
+                const dummy = dummies.find(d => d.id === c.dummyId);
+                const badge = c.result === 'OK'
+                    ? '<span class="badge badge-emerald">OK</span>'
+                    : '<span class="badge badge-rose">NG</span>';
+
+                const tr = document.createElement('tr');
+                if (c.result === 'NG') tr.className = 'row-expired';
+                tr.innerHTML = `
+                    <td class="mono" style="font-size:0.8rem;font-weight:700;white-space:nowrap;">${formatDateTH(c.date)} <span style="color:#64748b;font-weight:400;">${escapeHTML(c.timestamp || '')}</span></td>
+                    <td style="font-size:0.8rem;white-space:nowrap;">${escapeHTML(c.shift.split(' ')[0])}</td>
+                    <td class="mono" style="font-weight:700;font-size:0.82rem;white-space:nowrap;">${escapeHTML(c.dummyId)}</td>
+                    <td style="font-size:0.8rem;">${dummy ? `${escapeHTML(dummy.station)} (${escapeHTML(dummy.partName)})` : '<span style="color:#94a3b8;">(ลบออกจากทะเบียนแล้ว)</span>'}</td>
+                    <td style="text-align:center;">${badge}</td>
+                    <td style="font-size:0.8rem;font-weight:600;white-space:nowrap;">${escapeHTML(c.inspector)}</td>
+                    <td style="font-size:0.8rem;color:#334155;">${escapeHTML(c.note || '-')}</td>
+                    <td style="text-align:center;">
+                        <button type="button" onclick="deleteCheckRecord('${escapeHTML(c.uid)}')" class="btn btn-ghost-danger btn-sm">ลบ</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (count === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="padding:24px;text-align:center;color:#94a3b8;">
+                            ไม่มีประวัติการบันทึกผลตรวจสอบในเงื่อนไขที่เลือก
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function openDailySheetPrintPreview() {
+            const monthFilter = document.getElementById('history-month-filter').value || getLocalISODate().slice(0, 7);
+            const filteredLogs = dailyChecks.filter(c => c.date.startsWith(monthFilter));
+
+            document.getElementById('print-modal-title').textContent = `พิมพ์รายงาน Daily Check Sheet ประจำเดือน ${monthFilter}`;
+            document.getElementById('print-modal-subtitle').textContent = 'แบบฟอร์มบันทึกการทวนสอบ Error-Proofing / Dummy Test (IATF 16949: 10.2.4)';
+
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = `
+                <div style="color:#0f172a;">
+                    <div style="border:2px solid #0f172a;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <div>
+                            <div style="font-size:1.05rem;font-weight:700;">ใบตรวจสอบอุปกรณ์ป้องกันความผิดพลาดประจำวัน (ERROR-PROOFING / DUMMY DAILY CHECK SHEET)</div>
+                            <div style="font-size:0.8rem;color:#334155;margin-top:2px;">อ้างอิงข้อกำหนดมาตรฐาน IATF 16949:2016 ข้อ 10.2.4 | ประจำเดือน: <strong>${escapeHTML(monthFilter)}</strong></div>
+                        </div>
+                        <div class="mono" style="text-align:right;font-size:0.78rem;border-left:1px solid #cbd5e1;padding-left:12px;">
+                            <div>DOC NO: FM-QA-EP-002</div>
+                            <div>REV: 00</div>
+                        </div>
+                    </div>
+
+                    <table class="print-sheet-table" style="width:100%;border-collapse:collapse;font-size:0.8rem;">
+                        <thead>
+                            <tr style="background:#e2e8f0;">
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:center;width:105px;">วันที่ / เวลา</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:center;width:65px;">กะ</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;width:110px;">รหัส Dummy</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;">จุดติดตั้ง / รุ่นชิ้นงาน</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:center;width:65px;">ผล Test</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;width:130px;">ผู้ทำการ Test</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;">หมายเหตุ / Containment Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredLogs.length > 0 ? filteredLogs.map(c => {
+                                const dummy = dummies.find(d => d.id === c.dummyId);
+                                return `
+                                    <tr>
+                                        <td class="mono" style="border:1px solid #0f172a;padding:5px;text-align:center;">${formatDateTH(c.date)} ${escapeHTML(c.timestamp || '')}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;text-align:center;">${escapeHTML(c.shift.split(' ')[0])}</td>
+                                        <td class="mono" style="border:1px solid #0f172a;padding:5px;font-weight:700;">${escapeHTML(c.dummyId)}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;">${dummy ? `${escapeHTML(dummy.station)} - ${escapeHTML(dummy.partName)}` : '-'}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;text-align:center;font-weight:700;${c.result === 'NG' ? 'background:#ffe4e6;color:#be123c;' : ''}">${escapeHTML(c.result)}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;">${escapeHTML(c.inspector)}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;">${escapeHTML(c.note || '-')}</td>
+                                    </tr>
+                                `;
+                            }).join('') : `
+                                <tr><td colspan="7" style="border:1px solid #0f172a;padding:16px;text-align:center;">ไม่มีข้อมูลการบันทึกในเดือน ${escapeHTML(monthFilter)}</td></tr>
+                            `}
+                        </tbody>
+                    </table>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px;font-size:0.8rem;text-align:center;">
+                        <div>
+                            <div style="margin-bottom:28px;">ทวนสอบโดย (Verified By - QA / Leader):</div>
+                            <div>ลงชื่อ ...................................................... วันที่ ....../....../......</div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom:28px;">อนุมัติโดย (Approved By - QA Manager):</div>
+                            <div>ลงชื่อ ...................................................... วันที่ ....../....../......</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('print-modal').classList.remove('hidden');
+        }
+
+        // =========================================================================
+        // 9. TAB 3: PACKING MACHINE PRE-USE WEIGHING VERIFICATION (C2 - J7)
+        // =========================================================================
+        function renderPackingCards() {
+            const grid = document.getElementById('packing-machines-grid');
+            const selectedDate = document.getElementById('pack-date').value;
+            const selectedShift = document.getElementById('pack-shift').value;
+
+            grid.innerHTML = '';
+
+            PACKING_MACHINES.forEach(mc => {
+                const existing = packingChecks.find(
+                    p => p.date === selectedDate && p.shift === selectedShift && p.machineId === mc.id
+                );
+
+                const lastRecord = packingChecks.find(p => p.machineId === mc.id);
+                const defPart = lastRecord ? lastRecord.partLot : '';
+                const defQty = lastRecord ? lastRecord.targetQty : 500;
+                const defTargetW = lastRecord ? lastRecord.targetWeight : '';
+                const defUnit = lastRecord ? (lastRecord.unit || 'g') : 'g';
+                const defTol = lastRecord && lastRecord.tolPct ? lastRecord.tolPct : 1.0;
+
+                const card = document.createElement('div');
+                let cardClass = 'check-card';
+                if (existing) {
+                    cardClass += existing.result === 'OK' ? ' state-ok' : ' state-ng';
+                }
+                card.className = cardClass;
+
+                if (existing) {
+                    const isOk = existing.result === 'OK';
+                    const unit = escapeHTML(existing.unit || 'g');
+                    const diffWeightStr = existing.diffWeight !== undefined
+                        ? `${existing.diffWeight > 0 ? '+' : ''}${existing.diffWeight}${unit}`
+                        : '';
+                    card.innerHTML = `
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-light);padding-bottom:8px;">
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <span class="mc-tag">${escapeHTML(mc.id)}</span>
+                                    <span style="font-size:0.76rem;color:#64748b;">${escapeHTML(mc.line)}</span>
+                                </div>
+                                <span class="badge ${isOk ? 'badge-emerald' : 'badge-rose'}">
+                                    ${isOk ? 'OK (จำนวนถูกต้อง)' : 'NG (ไม่ถูกต้อง)'}
+                                </span>
+                            </div>
+
+                            <div style="font-size:0.8rem;display:flex;flex-direction:column;gap:5px;color:#334155;">
+                                <div style="display:flex;justify-content:space-between;">
+                                    <span style="color:#64748b;">หัวข้อการ Test:</span>
+                                    <strong style="color:var(--indigo);">จำนวนถูกต้อง (ชั่งน้ำหนัก)</strong>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;">
+                                    <span style="color:#64748b;">Part No. / Lot:</span>
+                                    <strong class="mono">${escapeHTML(existing.partLot || '-')}</strong>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;">
+                                    <span style="color:#64748b;">จำนวนตั้งค่า (Target Qty):</span>
+                                    <strong class="mono">${escapeHTML(existing.targetQty)} ชิ้น</strong>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;">
+                                    <span style="color:#64748b;">นน.มาตรฐาน / ชั่งจริง:</span>
+                                    <strong class="mono">${escapeHTML(existing.targetWeight)}${unit} / ${escapeHTML(existing.actualWeight)}${unit} (${diffWeightStr} / ${existing.diffPct > 0 ? '+' : ''}${existing.diffPct}%)</strong>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;">
+                                    <span style="color:#64748b;">ผู้ทำการ Test:</span>
+                                    <strong>${escapeHTML(existing.inspector)} (${escapeHTML(existing.timestamp)})</strong>
+                                </div>
+                            </div>
+
+                            <div style="font-size:0.76rem;padding:8px 10px;border-radius:6px;background:${isOk ? '#dcfce7' : '#ffe4e6'};color:${isOk ? '#14532d' : '#881337'};">
+                                <strong>บันทึก:</strong> ${escapeHTML(existing.note)}
+                            </div>
+                        </div>
+
+                        <div style="display:flex;justify-content:flex-end;">
+                            <button type="button" onclick="deletePackingRecord('${escapeHTML(existing.uid)}')" class="btn btn-outline btn-sm">ยกเลิกเพื่อตรวจใหม่</button>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-light);padding-bottom:8px;">
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <span class="mc-tag" style="background:var(--indigo);">${escapeHTML(mc.id)}</span>
+                                    <span style="font-size:0.76rem;color:#64748b;">${escapeHTML(mc.line)}</span>
+                                </div>
+                                <span class="badge badge-amber">รอตรวจก่อนใช้งาน</span>
+                            </div>
+
+                            <div class="topic-banner">
+                                <span>หัวข้อ: จำนวนถูกต้อง (ทำการทวนสอบด้วยการชั่งน้ำหนัก)</span>
+                            </div>
+
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                <div>
+                                    <label class="form-label" for="pack-part-${mc.code}">Part No. / Lot No.</label>
+                                    <input type="text" id="pack-part-${mc.code}" value="${escapeHTML(defPart)}" placeholder="เช่น SH-4021 / L01" class="form-control mono" style="padding:6px 8px;font-size:0.8rem;">
+                                </div>
+                                <div>
+                                    <label class="form-label" for="pack-qty-${mc.code}">จำนวนตั้งค่า (ชิ้น)</label>
+                                    <input type="number" id="pack-qty-${mc.code}" value="${escapeHTML(defQty)}" min="1" placeholder="500" class="form-control mono" style="padding:6px 8px;font-size:0.8rem;">
+                                </div>
+                            </div>
+
+                            <div style="display:grid;grid-template-columns:1fr 1fr 0.85fr;gap:8px;">
+                                <div>
+                                    <label class="form-label" for="pack-tw-${mc.code}">นน.มาตรฐาน</label>
+                                    <input type="number" step="0.01" min="0.01" id="pack-tw-${mc.code}" value="${escapeHTML(defTargetW)}" oninput="calcPackingDiff('${mc.code}')" placeholder="2500.0" class="form-control mono" style="padding:6px 8px;font-size:0.8rem;">
+                                </div>
+                                <div>
+                                    <label class="form-label" for="pack-aw-${mc.code}">นน.ชั่งจริง</label>
+                                    <input type="number" step="0.01" min="0.01" id="pack-aw-${mc.code}" oninput="calcPackingDiff('${mc.code}')" placeholder="2500.0" class="form-control mono" style="padding:6px 8px;font-size:0.8rem;">
+                                </div>
+                                <div>
+                                    <label class="form-label" for="pack-unit-${mc.code}">หน่วย / เกณฑ์%</label>
+                                    <div style="display:flex;gap:4px;">
+                                        <select id="pack-unit-${mc.code}" class="form-control mono" style="padding:6px 4px;font-size:0.78rem;">
+                                            <option value="g" ${defUnit === 'g' ? 'selected' : ''}>g</option>
+                                            <option value="kg" ${defUnit === 'kg' ? 'selected' : ''}>kg</option>
+                                        </select>
+                                        <input type="number" step="0.1" min="0.1" id="pack-tol-${mc.code}" value="${defTol}" oninput="calcPackingDiff('${mc.code}')" title="เกณฑ์ยอมรับ ±%" class="form-control mono" style="padding:6px 4px;font-size:0.78rem;text-align:center;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background:#f8fafc;border:1px solid var(--border-light);border-radius:6px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;">
+                                <span style="color:#64748b;">ผลต่างน้ำหนัก (Diff):</span>
+                                <span id="pack-diff-${mc.code}" class="mono" style="font-weight:700;color:#64748b;">รอระบุน้ำหนัก</span>
+                            </div>
+                        </div>
+
+                        <div class="btn-pair">
+                            <button type="button" onclick="recordPackingOk('${mc.code}')" class="btn btn-emerald" style="padding:9px;">
+                                <span>OK (ถูกต้อง)</span>
+                            </button>
+                            <button type="button" onclick="openPackingNgModal('${mc.code}')" class="btn btn-rose" style="padding:9px;">
+                                <span>NG (ไม่ถูกต้อง)</span>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        function calcPackingDiff(mcCode) {
+            const tw = parseFloat(document.getElementById(`pack-tw-${mcCode}`).value);
+            const aw = parseFloat(document.getElementById(`pack-aw-${mcCode}`).value);
+            const tol = parseFloat(document.getElementById(`pack-tol-${mcCode}`).value) || 1.0;
+            const unit = document.getElementById(`pack-unit-${mcCode}`).value;
+            const diffEl = document.getElementById(`pack-diff-${mcCode}`);
+
+            if (!isNaN(tw) && tw > 0 && !isNaN(aw) && aw > 0) {
+                const diffWeight = parseFloat((aw - tw).toFixed(2));
+                const diffPct = parseFloat((((aw - tw) / tw) * 100).toFixed(2));
+                const absDiff = Math.abs(diffPct);
+
+                const signW = diffWeight > 0 ? '+' : '';
+                const signP = diffPct > 0 ? '+' : '';
+                const passText = absDiff <= tol ? 'อยู่ในเกณฑ์' : 'เกินเกณฑ์!';
+                diffEl.textContent = `${signW}${diffWeight}${unit} (${signP}${diffPct}%) [${passText}]`;
+                diffEl.style.color = absDiff <= tol ? '#059669' : '#e11d48';
+            } else {
+                diffEl.textContent = 'รอระบุน้ำหนัก';
+                diffEl.style.color = '#64748b';
+            }
+        }
+
+        function extractPackingCardPayload(mcCode) {
+            const mcObj = PACKING_MACHINES.find(m => m.code === mcCode);
+            const date = document.getElementById('pack-date').value;
+            const shift = document.getElementById('pack-shift').value;
+            const inspector = document.getElementById('pack-inspector').value.trim();
+
+            const partLot = document.getElementById(`pack-part-${mcCode}`).value.trim() || '-';
+            const targetQty = parseInt(document.getElementById(`pack-qty-${mcCode}`).value, 10) || 0;
+            const targetWeight = parseFloat(document.getElementById(`pack-tw-${mcCode}`).value) || 0;
+            const actualWeight = parseFloat(document.getElementById(`pack-aw-${mcCode}`).value) || 0;
+            const tolPct = parseFloat(document.getElementById(`pack-tol-${mcCode}`).value) || 1.0;
+            const unit = document.getElementById(`pack-unit-${mcCode}`).value;
+
+            let diffWeight = 0;
+            let diffPct = 0;
+            if (targetWeight > 0 && actualWeight > 0) {
+                diffWeight = parseFloat((actualWeight - targetWeight).toFixed(2));
+                diffPct = parseFloat((((actualWeight - targetWeight) / targetWeight) * 100).toFixed(2));
+            }
+
+            return {
+                date,
+                shift,
+                machineId: mcObj.id,
+                partLot,
+                targetQty,
+                targetWeight,
+                actualWeight,
+                unit,
+                tolPct,
+                diffWeight,
+                diffPct,
+                inspector
+            };
+        }
+
+        function recordPackingOk(mcCode) {
+            const payload = extractPackingCardPayload(mcCode);
+
+            if (!payload.date) {
+                showToast('กรุณาเลือกวันที่ทำการ Test', 'warning');
+                return;
+            }
+            if (!payload.inspector) {
+                showToast('กรุณาระบุชื่อ "ผู้ทำการ Test" ก่อนบันทึกผล', 'warning');
+                document.getElementById('pack-inspector').focus();
+                return;
+            }
+            if (payload.targetWeight <= 0 || payload.actualWeight <= 0) {
+                showToast(`กรุณากรอกน้ำหนักมาตรฐานและน้ำหนักชั่งจริงของ ${payload.machineId} ก่อนกด OK`, 'warning');
+                document.getElementById(`pack-aw-${mcCode}`).focus();
+                return;
+            }
+            if (Math.abs(payload.diffPct) > payload.tolPct) {
+                showToast(`ค่าน้ำหนักต่างเกินเกณฑ์ ±${payload.tolPct}% (Diff: ${payload.diffPct}%) หากไม่ผ่านกรุณากดปุ่ม NG`, 'error');
+                return;
+            }
+
+            // Prevent duplicate entry
+            const duplicate = packingChecks.some(
+                p => p.date === payload.date && p.shift === payload.shift && p.machineId === payload.machineId
+            );
+            if (duplicate) {
+                showToast(`เครื่อง ${payload.machineId} ถูกบันทึกผลในกะนี้แล้ว`, 'info');
+                renderPackingCards();
+                return;
+            }
+
+            packingChecks.unshift({
+                uid: 'PCK-' + Date.now() + '-' + mcCode,
+                ...payload,
+                result: 'OK',
+                note: 'จำนวนถูกต้อง (ทวนสอบด้วยการชั่งน้ำหนัก) ตรงตามมาตรฐาน',
+                timestamp: getLocalTimeStr()
+            });
+
+            persistPacking();
+            renderPackingCards();
+            renderPackingHistoryTable();
+            showToast(`บันทึกผล ${payload.machineId} : OK (จำนวนถูกต้อง) เรียบร้อย`, 'success');
+        }
+
+        function openPackingNgModal(mcCode) {
+            const payload = extractPackingCardPayload(mcCode);
+
+            if (!payload.inspector) {
+                showToast('กรุณาระบุชื่อ "ผู้ทำการ Test" ก่อนบันทึกผล NG', 'warning');
+                document.getElementById('pack-inspector').focus();
+                return;
+            }
+
+            pendingNgContext = { type: 'packing', id: payload.machineId, payload };
+            document.getElementById('ng-modal-title').textContent = `แจ้งเตือน: เครื่อง ${payload.machineId} ทวนสอบไม่ผ่าน (NG)`;
+            document.getElementById('ng-modal-subtitle').textContent = 'Packing Weight / Quantity Mismatch — Containment Required';
+            document.getElementById('ng-modal-guidelines').innerHTML = `
+                <strong>มาตรการบังคับเมื่อจำนวน/น้ำหนักเครื่อง Packing ไม่ถูกต้อง (NG):</strong><br>
+                1. หยุดใช้งานเครื่อง <strong>${escapeHTML(payload.machineId)}</strong> ทันที ห้ามบรรจุสินค้าส่งมอบ<br>
+                2. กักกันกล่อง/ล็อตสินค้าที่บรรจุก่อนหน้าเพื่อชั่งทวนสอบและนับจำนวนใหม่ 100%<br>
+                3. แจ้งหัวหน้างาน / ช่างซ่อมบำรุงเพื่อปรับตั้งค่าเครื่องนับ/เครื่องชั่งให้ถูกต้อง
+            `;
+            document.getElementById('ng-modal-dummy-info').textContent = `${payload.machineId} | Part/Lot: ${payload.partLot} | เป้าหมาย: ${payload.targetWeight}${payload.unit} vs ชั่งจริง: ${payload.actualWeight}${payload.unit}`;
+            document.getElementById('ng-action-note').value = '';
+            document.getElementById('ng-modal').classList.remove('hidden');
+        }
+
+        function batchSavePackingChecks() {
+            const date = document.getElementById('pack-date').value;
+            const shift = document.getElementById('pack-shift').value;
+            const inspector = document.getElementById('pack-inspector').value.trim();
+
+            if (!date || !inspector) {
+                showToast('กรุณาระบุวันที่และชื่อ "ผู้ทำการ Test" ก่อนกด Batch Save', 'warning');
+                document.getElementById('pack-inspector').focus();
+                return;
+            }
+
+            let savedCount = 0;
+            const timeStr = getLocalTimeStr();
+
+            PACKING_MACHINES.forEach(mc => {
+                const alreadyExists = packingChecks.some(
+                    p => p.date === date && p.shift === shift && p.machineId === mc.id
+                );
+                if (alreadyExists) return;
+
+                const twInput = document.getElementById(`pack-tw-${mc.code}`);
+                const awInput = document.getElementById(`pack-aw-${mc.code}`);
+                if (!twInput || !awInput) return;
+
+                const payload = extractPackingCardPayload(mc.code);
+                if (payload.targetWeight > 0 && payload.actualWeight > 0 && Math.abs(payload.diffPct) <= payload.tolPct) {
+                    packingChecks.unshift({
+                        uid: 'PCK-' + Date.now() + '-' + mc.code + '-' + Math.random().toString(36).slice(2, 5),
+                        ...payload,
+                        result: 'OK',
+                        note: 'จำนวนถูกต้อง (ทวนสอบด้วยการชั่งน้ำหนัก) ตรงตามมาตรฐาน',
+                        timestamp: timeStr
+                    });
+                    savedCount++;
+                }
+            });
+
+            if (savedCount > 0) {
+                persistPacking();
+                renderPackingCards();
+                renderPackingHistoryTable();
+                showToast(`บันทึกผล OK พร้อมกันสำเร็จจำนวน ${savedCount} เครื่อง`, 'success');
+            } else {
+                showToast('ไม่พบรายการที่กรอกน้ำหนักครบถ้วนและอยู่ในเกณฑ์ Tolerance ที่กำหนด', 'info');
+            }
+        }
+
+        function deletePackingRecord(uid) {
+            openConfirmModal('ต้องการลบรายการบันทึกผลเครื่อง Packing นี้ใช่หรือไม่?', () => {
+                packingChecks = packingChecks.filter(p => p.uid !== uid);
+                persistPacking();
+                renderPackingCards();
+                renderPackingHistoryTable();
+                showToast('ลบรายการบันทึกผลเครื่อง Packing แล้ว', 'info');
+            });
+        }
+
+        function clearPackingHistoryFilters() {
+            document.getElementById('pack-history-date-filter').value = '';
+            document.getElementById('pack-history-mc-filter').value = 'ALL';
+            document.getElementById('pack-history-result-filter').value = 'ALL';
+            renderPackingHistoryTable();
+        }
+
+        function renderPackingHistoryTable() {
+            const tbody = document.getElementById('pack-history-table-body');
+            const dateFilter = document.getElementById('pack-history-date-filter').value;
+            const mcFilter = document.getElementById('pack-history-mc-filter').value;
+            const resultFilter = document.getElementById('pack-history-result-filter').value;
+
+            tbody.innerHTML = '';
+            let count = 0;
+
+            packingChecks.forEach(p => {
+                if (dateFilter && p.date !== dateFilter) return;
+                if (mcFilter !== 'ALL' && p.machineId !== mcFilter) return;
+                if (resultFilter !== 'ALL' && p.result !== resultFilter) return;
+
+                count++;
+                const unit = escapeHTML(p.unit || 'g');
+                const tol = p.tolPct || 1.0;
+                const badge = p.result === 'OK'
+                    ? '<span class="badge badge-emerald">OK</span>'
+                    : '<span class="badge badge-rose">NG</span>';
+
+                const diffW = p.diffWeight !== undefined ? `${p.diffWeight > 0 ? '+' : ''}${p.diffWeight}${unit} / ` : '';
+                const isOverTol = Math.abs(p.diffPct) > tol;
+
+                const tr = document.createElement('tr');
+                if (p.result === 'NG') tr.className = 'row-expired';
+                tr.innerHTML = `
+                    <td class="mono" style="font-size:0.8rem;font-weight:700;white-space:nowrap;">${formatDateTH(p.date)} <span style="color:#64748b;font-weight:400;">${escapeHTML(p.timestamp || '')}</span></td>
+                    <td style="font-size:0.8rem;white-space:nowrap;">${escapeHTML(p.shift.split(' ')[0])}</td>
+                    <td class="mono" style="font-weight:700;font-size:0.82rem;color:var(--indigo);white-space:nowrap;">${escapeHTML(p.machineId)}</td>
+                    <td class="mono" style="font-size:0.8rem;color:#334155;">${escapeHTML(p.partLot || '-')}</td>
+                    <td class="mono" style="font-size:0.8rem;text-align:right;font-weight:700;">${escapeHTML(p.targetQty)}</td>
+                    <td class="mono" style="font-size:0.8rem;text-align:right;white-space:nowrap;">${escapeHTML(p.targetWeight)}${unit} / <strong>${escapeHTML(p.actualWeight)}${unit}</strong></td>
+                    <td class="mono" style="font-size:0.8rem;text-align:center;font-weight:${isOverTol ? '700' : '400'};color:${isOverTol ? '#e11d48' : '#475569'};">
+                        ${diffW}${p.diffPct > 0 ? '+' : ''}${p.diffPct}%
+                    </td>
+                    <td style="text-align:center;">${badge}</td>
+                    <td style="font-size:0.8rem;font-weight:600;white-space:nowrap;">${escapeHTML(p.inspector)}</td>
+                    <td style="font-size:0.8rem;color:#334155;">${escapeHTML(p.note || '-')}</td>
+                    <td style="text-align:center;">
+                        <button type="button" onclick="deletePackingRecord('${escapeHTML(p.uid)}')" class="btn btn-ghost-danger btn-sm">ลบ</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (count === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="11" style="padding:24px;text-align:center;color:#94a3b8;">
+                            ไม่มีประวัติการทวนสอบเครื่อง Packing ในเงื่อนไขที่เลือก
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function openPackingSheetPrintPreview() {
+            const targetDate = document.getElementById('pack-date').value || getLocalISODate();
+            const logsForDate = packingChecks.filter(p => p.date === targetDate);
+
+            document.getElementById('print-modal-title').textContent = `พิมพ์ใบตรวจเครื่อง Packing ประจำวันที่ ${formatDateTH(targetDate)}`;
+            document.getElementById('print-modal-subtitle').textContent = 'หัวข้อการ Test: จำนวนถูกต้อง (ทำการทวนสอบด้วยการชั่งน้ำหนัก) — M/C C2, E3, G4, H5, I6, J7';
+
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = `
+                <div style="color:#0f172a;">
+                    <div style="border:2px solid #0f172a;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <div>
+                            <div style="font-size:1.05rem;font-weight:700;">ใบตรวจสอบเครื่อง PACKING ก่อนใช้งานประจำวัน (PACKING MACHINE PRE-USE CHECK SHEET)</div>
+                            <div style="font-size:0.8rem;color:#334155;margin-top:2px;">หัวข้อการ Test: <strong>จำนวนถูกต้อง (ทำการทวนสอบด้วยการชั่งน้ำหนัก)</strong> | วันที่ตรวจ: <strong>${formatDateTH(targetDate)}</strong></div>
+                        </div>
+                        <div class="mono" style="text-align:right;font-size:0.78rem;border-left:1px solid #cbd5e1;padding-left:12px;">
+                            <div>DOC NO: FM-PK-CHK-001</div>
+                            <div>REV: 00</div>
+                        </div>
+                    </div>
+
+                    <table class="print-sheet-table" style="width:100%;border-collapse:collapse;font-size:0.8rem;">
+                        <thead>
+                            <tr style="background:#e2e8f0;">
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:center;width:90px;">เครื่องจักร</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:center;width:60px;">กะ</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;">หัวข้อการทวนสอบ</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;">Part No. / Lot No.</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:right;width:70px;">จำนวน</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:right;width:120px;">นน.เป้า / ชั่งจริง</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:center;width:65px;">ผล Test</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;width:115px;">ผู้ทำการ Test</th>
+                                <th style="border:1px solid #0f172a;padding:6px;text-align:left;">หมายเหตุ / Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${PACKING_MACHINES.map(mc => {
+                                const matchingLogs = logsForDate.filter(l => l.machineId === mc.id);
+                                if (matchingLogs.length === 0) {
+                                    return `
+                                        <tr>
+                                            <td class="mono" style="border:1px solid #0f172a;padding:5px;text-align:center;font-weight:700;">${escapeHTML(mc.id)}</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;text-align:center;color:#94a3b8;">-</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;">จำนวนถูกต้อง (ชั่งน้ำหนัก)</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;color:#94a3b8;">-</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;text-align:right;color:#94a3b8;">-</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;text-align:right;color:#94a3b8;">-</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;text-align:center;color:#94a3b8;">รอตรวจ</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;color:#94a3b8;">-</td>
+                                            <td style="border:1px solid #0f172a;padding:5px;color:#94a3b8;">-</td>
+                                        </tr>
+                                    `;
+                                }
+                                return matchingLogs.map(c => `
+                                    <tr>
+                                        <td class="mono" style="border:1px solid #0f172a;padding:5px;text-align:center;font-weight:700;">${escapeHTML(c.machineId)}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;text-align:center;">${escapeHTML(c.shift.split(' ')[0])}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;">จำนวนถูกต้อง (ชั่งน้ำหนัก)</td>
+                                        <td class="mono" style="border:1px solid #0f172a;padding:5px;">${escapeHTML(c.partLot || '-')}</td>
+                                        <td class="mono" style="border:1px solid #0f172a;padding:5px;text-align:right;">${escapeHTML(c.targetQty)}</td>
+                                        <td class="mono" style="border:1px solid #0f172a;padding:5px;text-align:right;">${escapeHTML(c.targetWeight)}${escapeHTML(c.unit || 'g')} / ${escapeHTML(c.actualWeight)}${escapeHTML(c.unit || 'g')}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;text-align:center;font-weight:700;${c.result === 'NG' ? 'background:#ffe4e6;color:#be123c;' : ''}">${escapeHTML(c.result)}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;">${escapeHTML(c.inspector)}</td>
+                                        <td style="border:1px solid #0f172a;padding:5px;">${escapeHTML(c.note || '-')}</td>
+                                    </tr>
+                                `).join('');
+                            }).join('')}
+                        </tbody>
+                    </table>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:28px;font-size:0.8rem;text-align:center;">
+                        <div>
+                            <div style="margin-bottom:28px;">ทวนสอบโดย (Verified By - Leader / Supervisor):</div>
+                            <div>ลงชื่อ ...................................................... วันที่ ....../....../......</div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom:28px;">อนุมัติโดย (Approved By - QA / Production Manager):</div>
+                            <div>ลงชื่อ ...................................................... วันที่ ....../....../......</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('print-modal').classList.remove('hidden');
+        }
+
+        // =========================================================================
+        // 10. EXPORT & IMPORT DATA (JSON & CSV WITH UTF-8 BOM)
+        // =========================================================================
+        function triggerDownload(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function exportData(format) {
+            const todayStr = getLocalISODate();
+            if (format === 'json') {
+                const payload = {
+                    version: 2,
+                    exportedAt: new Date().toISOString(),
+                    dummies,
+                    dailyChecks,
+                    packingChecks
+                };
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                triggerDownload(blob, `IATF_Verification_Backup_${todayStr}.json`);
+                showToast('ส่งออกไฟล์สำรองข้อมูล JSON สำเร็จ', 'success');
+            } else if (format === 'csv-dummy') {
+                let csv = '\uFEFFDummy ID,Part Name / Model,Defect Type,Station / Machine,Register Date,Expiry Date,Registered By,Status\n';
+                dummies.forEach(d => {
+                    csv += [d.id, d.partName, d.defectType, d.station, d.regDate, d.expiryDate, d.registeredBy, d.status]
+                        .map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',') + '\n';
+                });
+                triggerDownload(new Blob([csv], { type: 'text/csv;charset=utf-8;' }), `Dummy_Registration_Log_${todayStr}.csv`);
+                showToast('ส่งออก CSV ทะเบียน Dummy สำเร็จ', 'success');
+            } else if (format === 'csv-daily') {
+                let csv = '\uFEFFTest Date,Time,Shift,Dummy ID,Result (OK/NG),Inspector,Note / Containment Action\n';
+                dailyChecks.forEach(c => {
+                    csv += [c.date, c.timestamp || '', c.shift, c.dummyId, c.result, c.inspector, c.note]
+                        .map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',') + '\n';
+                });
+                triggerDownload(new Blob([csv], { type: 'text/csv;charset=utf-8;' }), `Dummy_Daily_Check_${todayStr}.csv`);
+                showToast('ส่งออก CSV ประวัติตรวจ Dummy สำเร็จ', 'success');
+            } else if (format === 'csv-packing') {
+                let csv = '\uFEFFTest Date,Time,Shift,Machine ID,Test Topic,Part / Lot No,Target Qty,Target Weight,Actual Weight,Unit,Diff Weight,Diff %,Result (OK/NG),Inspector,Note / Action\n';
+                packingChecks.forEach(p => {
+                    csv += [
+                        p.date, p.timestamp || '', p.shift, p.machineId,
+                        'จำนวนถูกต้อง (ทำการทวนสอบด้วยการชั่งน้ำหนัก)',
+                        p.partLot, p.targetQty, p.targetWeight, p.actualWeight, p.unit || 'g',
+                        p.diffWeight ?? 0, p.diffPct ?? 0, p.result, p.inspector, p.note
+                    ].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',') + '\n';
+                });
+                triggerDownload(new Blob([csv], { type: 'text/csv;charset=utf-8;' }), `Packing_PreUse_Check_${todayStr}.csv`);
+                showToast('ส่งออก CSV ประวัติตรวจเครื่อง Packing สำเร็จ', 'success');
+            }
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (!parsed || !Array.isArray(parsed.dummies) || !Array.isArray(parsed.dailyChecks)) {
+                        showToast('โครงสร้างไฟล์ JSON ไม่ถูกต้อง', 'error');
+                        return;
+                    }
+                    dummies = parsed.dummies;
+                    dailyChecks = parsed.dailyChecks;
+                    packingChecks = Array.isArray(parsed.packingChecks) ? parsed.packingChecks : [];
+                    selectedDummyIdsForPrint.clear();
+
+                    persistAll();
+                    renderDummyTable();
+                    renderDailyChecklist();
+                    renderCheckHistoryTable();
+                    renderPackingCards();
+                    renderPackingHistoryTable();
+                    showToast('นำเข้าข้อมูลสำเร็จครบถ้วน', 'success');
+                } catch (err) {
+                    showToast('เกิดข้อผิดพลาดในการอ่านไฟล์ JSON', 'error');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // =========================================================================
+        // 11. BOOTSTRAP ON WINDOW LOAD
+        // =========================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            const todayStr = getLocalISODate();
+            document.getElementById('reg-date').value = todayStr;
+            document.getElementById('check-date').value = todayStr;
+            document.getElementById('pack-date').value = todayStr;
+            document.getElementById('history-month-filter').value = todayStr.slice(0, 7);
+
+            autoCalculateExpiry();
+            initAppData();
+            updateDashboardStats();
+            renderDummyTable();
+        });
+    </script>
+</body>
+</html>
